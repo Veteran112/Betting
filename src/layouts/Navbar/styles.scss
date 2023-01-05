@@ -1,0 +1,57 @@
+@import '../../assets/scss/global.scss';
+
+.extended-menu {
+  position: relative;
+  &.expanded {
+    .extended-menu-icon {
+      background: $color-onyx;
+      color: #FFFFFF;
+      border-radius: 5px;
+    }
+  }
+
+  .extended-menu-icon {
+    &:hover {
+      background: $color-onyx;
+      color: #FFFFFF;
+      border-radius: 5px;
+    }
+  }
+
+  .menu-panel {
+    position:absolute;
+    right: 0;
+    margin-top: -5px;
+    background: $color-onyx;
+    color: #fafafa;
+    border-radius: 5px;
+    padding: 1.5em 1.5em;
+    z-index: 9;
+    width: min-content;
+
+    ul {
+      list-style: none;
+      margin-bottom: 0px;
+      padding: 0;
+
+      li {
+        font-family: "WorkSans";
+        font-size: 16px;
+        line-height: 100%;
+        font-variation-settings: "wght" 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+
+        &:hover {
+          color: $color-light-blue;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .menu-divider {
+      border-bottom: 1px solid #7f858a;
+      margin: 12px 0px;
+    }
+  }
+}

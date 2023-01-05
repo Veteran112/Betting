@@ -1,0 +1,52 @@
+.r-table {
+
+  &.r-table-full {
+    width: 100%;
+  }
+
+  thead {
+    tr {
+      border-bottom: 1px solid #c9d0d5;
+
+      th {
+        padding: 0.5rem;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-bottom: 1px solid #c9d0d5;
+      font-family: "WorkSans";
+      font-size: 16px;
+      color: #4d5154;
+      line-height: 140%;
+      font-variation-settings: "wght" 700;
+
+      td {
+        padding: 0.5rem;
+
+        .action-items-wrapper {
+          font-size: 13px;
+
+          i {
+            color: #004C8E;
+            &:hover {
+              color: #005CB9;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+
+  .pagination {
+    gap: 0.5em;
+    align-items: center;
+  }
+}

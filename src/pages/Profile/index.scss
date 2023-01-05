@@ -1,0 +1,29 @@
+@import '../../assets/scss/global.scss';
+
+.profile-container {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+
+  .profile-box {
+    background: white;
+    width: 100%;
+    min-height: 400px;
+    border-radius: 8px;
+    margin: 30px auto;
+    padding: 20px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    .profile-content {
+      border: 2px solid rgb(161, 76, 76);
+      padding: 20px;
+    }
+    .divider {
+      border-bottom: 1px solid #7f858a;
+    }
+  }
+  .phone_field {
+    height: 50px;
+    padding: 5px 0 0 0px;
+  }
+}

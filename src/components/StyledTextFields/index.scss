@@ -1,0 +1,16 @@
+@import "../../assets/scss/global.scss";
+
+.primaryLabel {
+  font-size: 15px !important;
+  font-family: 'WorkSans' !important;
+  font-variation-settings: 'wght' 500 !important;
+  border-bottom: 1px solid $color-tint-gray;
+  color: $color-onyx !important;
+}
+
+.helperText {
+  margin-left: 0 !important;
+  font-family: 'WorkSans' !important;
+  font-size: 12px !important;
+  font-variation-settings: 'wght' 500 !important;
+}

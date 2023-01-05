@@ -1,0 +1,40 @@
+.input-type {
+  .MuiInputBase-input, .MuiFormLabel-root {
+    font-size: 16px;
+    line-height: 100%;
+    font-family: 'WorkSans';
+    font-variation-settings: 'wght' 700;
+    padding-left: 9px;
+    letter-spacing: 0.04em;
+  }
+  .MuiInput-underline:before {
+    border-bottom: 1px solid $color-tint-gray;
+  }
+  .MuiInput-underline:after {
+    border-bottom: 2px solid $color-shade-blue;
+  }
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border-bottom: 2px solid $color-shade-blue;
+  }
+  .MuiFormLabel-root.Mui-focused {
+    color: $color-shade-blue !important;
+  }
+}
+
+.input-error {
+  .MuiFormLabel-root.Mui-focused {
+    color: $color-red !important;
+  }
+  .MuiFilledInput-root {
+    border: 1px solid $color-red !important;
+  }
+  .MuiFormHelperText-root {
+    color: $color-red !important;
+  }
+  .MuiFilledInput-underline:after {
+    border-bottom: 2px solid $color-red !important;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-color: $color-red !important;
+  }
+}

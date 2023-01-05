@@ -1,0 +1,17 @@
+@import '../../assets/scss/global.scss';
+.work-time-container {
+  background-color: $color-tint-white !important;
+  display: flex;
+  position: relative;
+
+  .work-time-details-box {
+    background: white;
+    width: 100%;
+    min-height: 300px;
+    border-radius: 8px;
+    margin: 40px 20px 40px 20px;
+    padding: 20px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}

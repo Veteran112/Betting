@@ -1,0 +1,255 @@
+@font-face{
+  font-family: 'WorkSans';
+  src: url('../fonts/WorkSans.ttf');
+  font-weight: bold;
+  font-style: bold;
+}
+
+body {
+  font-family: 'WorkSans';
+}
+
+.App {
+  font-family: 'WorkSans';
+  font-variation-settings: 'wght' 400;
+}
+
+.sky-blue{
+  color: $color-sky-blue !important;
+}
+
+.light-blue{
+  color: $color-light-blue !important;
+}
+
+.tint-blue{
+  color: $color-tint-blue !important;
+}
+
+.blue {
+  color: $color-blue !important;
+}
+
+.tone-blue {
+  color: $color-tone-blue !important;
+}
+
+.shade-blue {
+  color: $color-shade-blue !important;
+}
+
+.tint-gray {
+  color: $color-tint-gray !important;
+}
+
+.tone-gray {
+  color: $color-tone-gray !important;
+}
+
+.shade-gray {
+  color: $color-shade-gray !important;
+}
+
+.tint-white {
+  color: $color-tint-white !important;
+}
+
+.tone-white{
+  color: $color-tone-white !important;
+}
+
+.onyx {
+  color: $color-onyx !important;
+}
+
+.yellow {
+  color: $color-yellow !important;
+}
+
+.green {
+  color: $color-green !important;
+}
+
+.red {
+  color: $color-red !important;
+}
+
+.black {
+  color: black !important;
+}
+
+.white{ 
+  color: white !important;
+}
+
+.text-danger{
+  color: $color-red !important
+}
+
+.logo-light-blue{
+  color: $color-logo-light-blue !important;
+}
+.logo-medium-blue{
+  color: $color-logo-medium-blue !important;
+}
+.logo-heavy-blue{
+  color: $color-logo-heavy-blue !important;
+}
+
+.font-weight-400 {
+  font-variation-settings: 'wght' 400 !important;
+}
+
+.font-weight-500 {
+  font-variation-settings: 'wght' 500 !important;
+}
+
+.font-weight-600 {
+  font-variation-settings: 'wght' 600 !important;
+}
+
+.font-weight-700 {
+  font-variation-settings: 'wght' 700 !important;
+}
+
+
+.main-font {
+  font-family: 'WorkSans' !important;
+}
+
+.text-transform-none {
+  text-transform: none !important;
+}
+
+h1{
+  font-family: 'WorkSans';
+  font-size: 43px;
+  line-height: 90%;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-family: 'WorkSans';
+  font-size: 30px;
+  line-height: 28px;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-family: 'WorkSans';
+  font-size: 24px;
+  line-height: 28px;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: -0.02em;
+}
+
+.web-header-3{
+  font-family: 'WorkSans';
+  font-size: 26px;
+  line-height: 28px;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: -0.02em;
+}
+
+.small {
+  font-family: 'WorkSans';
+  font-size: 14px;
+  line-height: 100%;
+  font-variation-settings: 'wght' 500;
+}
+
+.fbtn {
+  font-family: 'WorkSans';
+  font-size: 16px;
+  line-height: 100%;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: 0.04em;
+}
+
+.legal {
+  font-family: 'WorkSans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 140%;
+  font-variation-settings: 'wght' 400;
+}
+
+.subtitle{
+  font-family: 'WorkSans';
+  font-size: 24px;
+  line-height: 28px;
+  font-variation-settings: 'wght' 500;
+  color: black;
+}
+
+.pretitle{
+  font-family: 'WorkSans';
+  font-size: 12px;
+  line-height: 14px;
+  font-variation-settings: 'wght' 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: black;
+}
+
+.clickable{
+  font-family: 'WorkSans';
+  font-size: 16px;
+  color: $color-tint-blue;
+  line-height: 140%;
+  letter-spacing: 0.04em;
+  font-variation-settings: 'wght' 700;
+  &:hover{
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+.bodybold{
+  font-family: 'WorkSans';  
+  font-size: 16px;
+  color: $color-onyx;
+  line-height: 140%;
+  font-variation-settings: 'wght' 700;
+}
+
+.body {
+  font-family: 'WorkSans';
+  font-size: 16px;
+  color: $color-onyx;
+  line-height: 140%;
+  font-variation-settings: 'wght' 500;
+}
+
+.text-underline {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+@media (max-width:768px) {
+  h1 {
+    font-size: 35px !important;
+  }
+  h2 {
+    font-size: 24px !important;
+  }
+  h3 {
+    font-size: 20px !important;
+  }
+  .subtitle {
+    font-size: 20px !important;
+  }
+  .web_header-3 {
+    font-size: 22px !important;
+  }
+}
+@for $i from 12 through 36 {
+  .font-size-#{$i} {
+    font-size: #{$i}px !important;
+  }
+}

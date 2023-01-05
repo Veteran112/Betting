@@ -1,0 +1,5 @@
+export const ROOT = '/home'
+export const LOGIN = '/login'
+export const DASHBOARD = '/dashboard'
+export const PIPELINES = '/pipelines'
+export const PRICING = '/pricing'
