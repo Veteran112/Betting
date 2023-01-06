@@ -11,6 +11,7 @@ const Landing = React.lazy(() => import('pages/Landing'))
 const Login = React.lazy(() => import('pages/Login'))
 const Register = React.lazy(() => import('pages/Register'))
 const Profile = React.lazy(() => import('pages/Profile'))
+const BettingProvider = React.lazy(() => import('pages/BettingProvider'))
 const Interpreters = React.lazy(() => import('pages/WorkTime'))
 const ManageAccounts = React.lazy(() => import('pages/ManageAccounts'))
 const ForgotPasswordContainer = React.lazy(() => import('pages/ForgotPassword'))
@@ -45,14 +46,26 @@ export const RouterConfig = () => {
           />
           <Route
             exact
+            path="/betting_provider"
+            element={
+              // <PrivateRoute>
+              <>
+                <Navbar />
+                <BettingProvider />
+              </>
+              // </PrivateRoute>
+            }
+          />
+          <Route
+            exact
             path="/manage_users"
             element={
-              <PrivateRoute>
-                <>
-                  <Navbar />
-                  <ManageAccounts />
-                </>
-              </PrivateRoute>
+              // <PrivateRoute>
+              <>
+                <Navbar />
+                <ManageAccounts />
+              </>
+              // </PrivateRoute>
             }
           />
           <Route

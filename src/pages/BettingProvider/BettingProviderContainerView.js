@@ -6,8 +6,8 @@ import { newUserFields, changePasswordFields, filterFields } from './constants'
 import { getAPIService } from 'services/apiServices'
 import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
-import UserModal from './components/UserModal'
-import FilterModal from './components/FilterModal'
+// import UserModal from './components/UserModal'
+import WorkTimeModal from './components/WorkTimeModal'
 import UserTableWrapper from './components/UserTableWrapper'
 import { removeKeysFromObject } from 'utils/convertors'
 
@@ -102,7 +102,7 @@ const ManageAccountsView = () => {
   const [loading, setLoading] = useState('')
 
   useEffect(() => {
-    document.title = 'Betting-Users'
+    document.title = 'Betting-Provider'
   }, [])
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const ManageAccountsView = () => {
         <div className="d-flex mt-2 mb-4 justify-content-between">
           <div>
             <Typography variant="h5" component="h5" className="onyx main-font">
-              Users{' '}
+              BETTING PROVIDERS{' '}
               <Chip label={`${availableUsers.totalUsers}`} color="primary" />
             </Typography>
             {isLoading && (
@@ -252,7 +252,7 @@ const ManageAccountsView = () => {
             }}
             selectedSorts={sortFields}
           />
-          <UserModal
+          <WorkTimeModal
             open={modalsState.editUser}
             title={'Update User'}
             sourceFields={removeKeysFromObject(newUserFields, ['password'])}
@@ -345,7 +345,7 @@ const ManageAccountsView = () => {
               })
             }}
           />
-          <UserModal
+          <WorkTimeModal
             open={modalsState.changeUserPassword}
             title={'Change Password'}
             sourceFields={changePasswordFields}
@@ -447,7 +447,7 @@ const ManageAccountsView = () => {
           />
         </div>
       </div>
-      <UserModal
+      <WorkTimeModal
         open={modalsState.createUser}
         title={'Create New User'}
         sourceFields={newUserFields}
@@ -537,7 +537,7 @@ const ManageAccountsView = () => {
           })
         }}
       />
-      <FilterModal
+      <WorkTimeModal
         open={modalsState.filter}
         title={'Filter'}
         sourceFields={filterFields}

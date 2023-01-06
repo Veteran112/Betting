@@ -11,7 +11,7 @@ import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
 import { removeKeysFromObject } from 'utils/convertors'
 
-const ManageAccountsView = () => {
+const BettingProviderView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
 
@@ -102,7 +102,7 @@ const ManageAccountsView = () => {
   const [loading, setLoading] = useState('')
 
   useEffect(() => {
-    document.title = 'Betting-Users'
+    document.title = 'Betting-Provider'
   }, [])
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const ManageAccountsView = () => {
         <div className="d-flex mt-2 mb-4 justify-content-between">
           <div>
             <Typography variant="h5" component="h5" className="onyx main-font">
-              Users{' '}
+              BETTING PROVIDERS{' '}
               <Chip label={`${availableUsers.totalUsers}`} color="primary" />
             </Typography>
             {isLoading && (
@@ -161,7 +161,7 @@ const ManageAccountsView = () => {
                 })
               }
             >
-              Create User
+              Create PROVIDER
             </PrimaryButton>
           </div>
         </div>
@@ -565,4 +565,4 @@ const ManageAccountsView = () => {
   )
 }
 
-export default ManageAccountsView
+export default BettingProviderView

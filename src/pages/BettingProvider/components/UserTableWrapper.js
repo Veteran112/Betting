@@ -23,51 +23,19 @@ const UserTableWrapper = (props) => {
         }
       },
       {
-        Header: 'First Name',
-        accessor: 'firstName', // accessor is the "key" in the data
+        Header: 'Name',
+        accessor: 'name', // accessor is the "key" in the data
         disableSortBy: true
       },
       {
-        Header: 'Last Name',
-        accessor: 'lastName',
+        Header: 'URL',
+        accessor: 'url',
         disableSortBy: true
       },
       {
-        Header: 'Email',
-        accessor: 'email',
+        Header: '',
+        accessor: 'customize',
         disableSortBy: true
-      },
-      {
-        Header: 'Password',
-        accessor: 'phone',
-        disableSortBy: true
-      },
-      {
-        Header: 'Status',
-        accessor: 'language',
-        disableSortBy: true,
-        Cell: ({ row }) => {
-          if (row.original.userType === 'interpreter') {
-            return <span>{row.original.language}</span>
-          } else {
-            return <></>
-          }
-        }
-      },
-      {
-        Header: ' ',
-        accessor: 'userType',
-        disableSortBy: true,
-        Cell: (props) => {
-          return (
-            <span>
-              {props.row.values.userType
-                .split('_')
-                .map((x) => x[0].toUpperCase() + x.substring(1))
-                .join(' ')}
-            </span>
-          )
-        }
       }
       //   {
       //     Header: 'Availability',

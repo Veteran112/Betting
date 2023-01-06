@@ -38,33 +38,33 @@ const newUserFields = {
   //   label: 'Account Type'
   //   // data: accountTypeData
   // },
-  email: {
+  name: {
     kind: 'TextField',
-    id: 'userEmailAddress',
-    label: 'Email Address',
+    id: 'name',
+    label: 'Name',
     data: '',
     helperTexts: {
       required: 'is Required'
     }
   },
-  firstName: {
+  url: {
     kind: 'TextField',
-    id: 'userFirstName',
-    label: 'First Name',
+    id: 'url',
+    label: 'URL',
     data: '',
     helperTexts: {
       required: 'is Required'
     }
-  },
-  lastName: {
-    kind: 'TextField',
-    id: 'userLastName',
-    label: 'Last Name',
-    data: '',
-    helperTexts: {
-      required: 'is Required'
-    }
-  },
+  }
+  // lastName: {
+  //   kind: 'TextField',
+  //   id: 'userLastName',
+  //   label: 'Last Name',
+  //   data: '',
+  //   helperTexts: {
+  //     required: 'is Required'
+  //   }
+  // },
   // language: {
   //   kind: 'TextField',
   //   id: 'language',
@@ -119,15 +119,15 @@ const newUserFields = {
   //     required: 'is Required'
   //   }
   // },
-  password: {
-    kind: 'TextField',
-    id: 'userPassword',
-    label: 'Password',
-    data: '12345678',
-    helperTexts: {
-      required: 'is Required'
-    }
-  }
+  // password: {
+  //   kind: 'TextField',
+  //   id: 'userPassword',
+  //   label: 'Password',
+  //   data: '12345678',
+  //   helperTexts: {
+  //     required: 'is Required'
+  //   }
+  // }
 }
 const filterFields = {
   userType: {

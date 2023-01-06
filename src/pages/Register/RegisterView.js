@@ -20,12 +20,12 @@ const RegisterView = () => {
     email: '',
     firstName: '',
     lastName: '',
-    company: '',
-    experience: '',
-    phone: '',
-    userType: 'interpreter',
-    language: '',
-    location: '',
+    // company: '',
+    // experience: '',
+    // phone: '',
+    // userType: 'interpreter',
+    // language: '',
+    // location: '',
     password: '',
     confirmPassword: ''
   })
@@ -133,7 +133,7 @@ const RegisterView = () => {
                     />
                   </RadioGroup>
                 </FormControl> */}
-                {data.userType === 'client' && (
+                {/* {data.userType === 'client' && (
                   <TextField
                     label="Company"
                     type="text"
@@ -144,7 +144,7 @@ const RegisterView = () => {
                       setData({ ...data, company: e.target.value })
                     }
                   />
-                )}
+                )} */}
                 {/* {data.userType === 'interpreter' && (
                   <>
                     <TextField

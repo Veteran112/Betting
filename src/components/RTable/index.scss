@@ -3,7 +3,11 @@
   &.r-table-full {
     width: 100%;
   }
-
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  
   thead {
     tr {
       border-bottom: 1px solid #c9d0d5;
