@@ -1,0 +1,37 @@
+@import '../../assets/scss/global.scss';
+
+.manage-accounts-container {
+  background-color: $color-tint-white !important;
+  display: flex;
+  position: relative;
+
+  .manage-accounts-details-box {
+    background: white;
+    width: 100%;
+    min-height: 300px;
+    border-radius: 8px;
+    margin: 40px 20px 40px 20px;
+    padding: 20px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    .available {
+      padding: 4px;
+      background: $color-tone-blue;
+      border-radius: 7px;
+      color: white;
+    }
+    .unavailable {
+      padding: 4px;
+      background: $color-onyx;
+      border-radius: 7px;
+      color: white;
+    }
+    .scheduled {
+      padding: 4px;
+      background: $color-dark-green;
+      border-radius: 7px;
+      color: white;
+    }
+  }
+
+}

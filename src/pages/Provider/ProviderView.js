@@ -6,12 +6,12 @@ import { newUserFields, changePasswordFields, filterFields } from './constants'
 import { getAPIService } from 'services/apiServices'
 import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
-// import UserModal from './components/UserModal'
-import WorkTimeModal from './components/WorkTimeModal'
+import UserModal from './components/UserModal'
+import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
 import { removeKeysFromObject } from 'utils/convertors'
 
-const ManageAccountsView = () => {
+const ProviderView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
 
@@ -63,7 +63,12 @@ const ManageAccountsView = () => {
   const [availableUsers, setAvailableUsers] = useState({
     totalUsers: 0,
     totalPages: 1,
-    usersData: []
+    usersData: [
+      '[NAVIGATE] https://bet123/login',
+      'USERNAME FFFFFFFF',
+      'PASSWORD FFFFFFFF',
+      '[NAVIGATE] https://bet123/quote'
+    ]
   })
   const [modalsState, setModalsState] = useState({
     createUser: false,
@@ -102,7 +107,7 @@ const ManageAccountsView = () => {
   const [loading, setLoading] = useState('')
 
   useEffect(() => {
-    document.title = 'Betting-Provider'
+    document.title = 'Betting Provider'
   }, [])
 
   useEffect(() => {
@@ -141,7 +146,7 @@ const ManageAccountsView = () => {
         <div className="d-flex mt-2 mb-4 justify-content-between">
           <div>
             <Typography variant="h5" component="h5" className="onyx main-font">
-              BETTING PROVIDERS{' '}
+              BETTING PROVIDER BET123{' '}
               <Chip label={`${availableUsers.totalUsers}`} color="primary" />
             </Typography>
             {isLoading && (
@@ -161,7 +166,7 @@ const ManageAccountsView = () => {
                 })
               }
             >
-              Create User
+              CREATE PROVIDER
             </PrimaryButton>
           </div>
         </div>
@@ -252,7 +257,7 @@ const ManageAccountsView = () => {
             }}
             selectedSorts={sortFields}
           />
-          <WorkTimeModal
+          <UserModal
             open={modalsState.editUser}
             title={'Update User'}
             sourceFields={removeKeysFromObject(newUserFields, ['password'])}
@@ -345,7 +350,7 @@ const ManageAccountsView = () => {
               })
             }}
           />
-          <WorkTimeModal
+          <UserModal
             open={modalsState.changeUserPassword}
             title={'Change Password'}
             sourceFields={changePasswordFields}
@@ -447,7 +452,7 @@ const ManageAccountsView = () => {
           />
         </div>
       </div>
-      <WorkTimeModal
+      <UserModal
         open={modalsState.createUser}
         title={'Create New User'}
         sourceFields={newUserFields}
@@ -537,7 +542,7 @@ const ManageAccountsView = () => {
           })
         }}
       />
-      <WorkTimeModal
+      <FilterModal
         open={modalsState.filter}
         title={'Filter'}
         sourceFields={filterFields}
@@ -565,4 +570,4 @@ const ManageAccountsView = () => {
   )
 }
 
-export default ManageAccountsView
+export default ProviderView

@@ -9,6 +9,7 @@ import './index.scss'
 import PropTypes from 'prop-types'
 import { PrimaryButton } from '../StyledButton'
 import SelectBox1 from '../SelectBox1'
+import { Button } from '@mui/material'
 
 const RTable = (props) => {
   const {
@@ -65,7 +66,7 @@ const RTable = (props) => {
     setPageSize,
     state: { pageIndex, pageSize, globalFilter }
   } = tableInstance
-
+  console.log(page, 'page')
   useEffect(() => {
     setGlobalFilter(props.setGlobalFilterValue)
   }, [props.setGlobalFilterValue])
@@ -148,17 +149,29 @@ const RTable = (props) => {
                 <tr {...row.getRowProps({ key: rowKey })} key={rowKey}>
                   {
                     // Loop over the rows cells
-                    row.cells.map((cell, cellKey) => {
-                      // Apply the cell props
-                      return (
-                        <td {...cell.getCellProps()} key={cellKey}>
-                          {
-                            // Render the cell contents
-                            cell.render('Cell')
-                          }
-                        </td>
-                      )
-                    })
+                    <>
+                      <td>
+                        {
+                          // Render the cell contents
+                          rowKey + 1
+                        }
+                      </td>
+                      <td>
+                        {
+                          // Render the cell contents
+                          row.original
+                        }
+                      </td>
+                      <td
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <Button className="btn">EDIT</Button>
+                        <Button className="btn">DELETE</Button>
+                      </td>
+                    </>
                   }
                 </tr>
               )
