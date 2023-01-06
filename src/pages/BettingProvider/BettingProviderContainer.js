@@ -4,7 +4,7 @@ import './styles.scss'
 
 export const BettingProviderContainer = () => {
   useEffect(() => {
-    document.title = 'Manage Accounts'
+    document.title = 'Betting Provider'
   }, [])
 
   return (
