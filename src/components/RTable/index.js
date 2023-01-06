@@ -183,7 +183,7 @@ const RTable = (props) => {
         <Typography className="command">Command: </Typography>
         <TextField
           style={{ marginTop: '30px' }}
-          defaultValue="Default Value"
+          defaultValue=""
           id="outlined-helperText"
           label="Command"
         ></TextField>
