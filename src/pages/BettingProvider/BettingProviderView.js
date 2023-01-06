@@ -161,7 +161,7 @@ const BettingProviderView = () => {
                 })
               }
             >
-              Create PROVIDER
+              CREATE PROVIDER
             </PrimaryButton>
           </div>
         </div>
