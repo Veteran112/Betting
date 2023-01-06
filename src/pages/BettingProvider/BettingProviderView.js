@@ -102,7 +102,7 @@ const BettingProviderView = () => {
   const [loading, setLoading] = useState('')
 
   useEffect(() => {
-    document.title = 'Betting-Provider'
+    document.title = 'Betting Provider'
   }, [])
 
   useEffect(() => {
