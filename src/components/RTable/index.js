@@ -9,7 +9,7 @@ import './index.scss'
 import PropTypes from 'prop-types'
 import { PrimaryButton } from '../StyledButton'
 import SelectBox1 from '../SelectBox1'
-import { Button } from '@mui/material'
+import { Button, TextField, Typography } from '@mui/material'
 
 const RTable = (props) => {
   const {
@@ -179,6 +179,17 @@ const RTable = (props) => {
           }
         </tbody>
       </table>
+      <div className="d-flex justify-content-between">
+        <Typography className="command">Command: </Typography>
+        <TextField
+          style={{ marginTop: '30px' }}
+          defaultValue="Default Value"
+          id="outlined-helperText"
+          label="Command"
+        ></TextField>
+        <Button className="_btn">+ADD COMMAND</Button>
+        <Button className="_btn">RUN TEST</Button>
+      </div>
       {manualPagination ? (
         paginationComponent
       ) : (
