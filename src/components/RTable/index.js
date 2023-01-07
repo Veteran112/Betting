@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   useTable,
   useGlobalFilter,
@@ -9,7 +9,7 @@ import './index.scss'
 import PropTypes from 'prop-types'
 import { PrimaryButton } from '../StyledButton'
 import SelectBox1 from '../SelectBox1'
-import { Button, TextField, Typography } from '@mui/material'
+import { Button, Modal, TextField, Typography, Box } from '@mui/material'
 
 const RTable = (props) => {
   const {
@@ -66,13 +66,22 @@ const RTable = (props) => {
     setPageSize,
     state: { pageIndex, pageSize, globalFilter }
   } = tableInstance
-  console.log(page, 'page')
+  const [test, setTest] = useState(false)
   useEffect(() => {
     setGlobalFilter(props.setGlobalFilterValue)
   }, [props.setGlobalFilterValue])
 
   useEffect(() => {}, [globalFilter])
-
+  const styles = {
+    position: 'absolute',
+    right: 75,
+    height: '440px',
+    top: '32%',
+    width: '65%',
+    bgcolor: 'white',
+    border: '2px solid rgb(151, 31, 136)',
+    textAlign: 'center'
+  }
   return (
     <div style={style} className="d-flex flex-column gap-1">
       <table {...getTableProps()} className="r-table r-table-full table-hover">
@@ -188,7 +197,9 @@ const RTable = (props) => {
           label="Command"
         ></TextField>
         <Button className="_btn">+ADD COMMAND</Button>
-        <Button className="_btn">RUN TEST</Button>
+        <Button className="_btn" onClick={() => setTest(true)}>
+          RUN TEST
+        </Button>
       </div>
       {manualPagination ? (
         paginationComponent
@@ -252,6 +263,21 @@ const RTable = (props) => {
           </div>
         </div>
       )}
+      <Modal open={test} onClose={() => setTest(false)}>
+        <Box sx={styles}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ mt: 20 }}
+          >
+            RUN TEST
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {'<EMBEDDED SCREEN OF PROVIDER>'}
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   )
 }
