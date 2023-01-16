@@ -1,7 +1,6 @@
 import React from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
-import Pagination from 'components/RTable/pagination'
 import { Button } from '@mui/material'
 
 const UserTableWrapper = (props) => {
@@ -13,8 +12,7 @@ const UserTableWrapper = (props) => {
       },
       {
         Header: 'Last Name',
-        accessor: 'lastName',
-        disableSortBy: true
+        accessor: 'lastName'
       },
       {
         Header: 'Email',
@@ -70,33 +68,14 @@ const UserTableWrapper = (props) => {
     []
   )
 
-  const sortColumns = React.useMemo(() => {
-    return [
-      {
-        id: 'createdAt',
-        desc: false
-      }
-    ]
-  }, [])
-
   return (
     <>
       <RTable
         data={props.data.usersData}
         columns={columns}
-        sortColumns={sortColumns}
+        sortColumns={props.sortColumns}
         style={{ height: 'auto' }}
-        manualPagination={true}
         manualSortBy={true}
-        paginationComponent={
-          <Pagination
-            pageChangeHandler={(currentPage) => {
-              props.onPaginationChange(currentPage)
-            }}
-            totalPages={props.data.totalPages}
-            defaultPageSize={props.pageLimit ?? 10}
-          />
-        }
         recordIncreaseNumber={props.recordIncreaseNumber}
         columnHeaderClick={(column) => {
           props.onSortChange(column)
@@ -118,6 +97,7 @@ UserTableWrapper.propTypes = {
   onSearchAccountsChange: PropTypes.func,
   onSortChange: PropTypes.func,
   selectedSorts: PropTypes.object,
-  row: PropTypes.array
+  row: PropTypes.array,
+  sortColumns: PropTypes.array
 }
 export default UserTableWrapper

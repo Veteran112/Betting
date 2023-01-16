@@ -137,6 +137,31 @@ const ManageAccountsView = () => {
   //   }
   // }, [modalsState.createUser])
 
+  const [sortColumns, setSortColumns] = useState([
+    {
+      id: 'firstName',
+      desc: false
+    }
+  ])
+
+  useEffect(() => {
+    if (JSON.stringify(sortFields) !== JSON.stringify({})) {
+      setSortColumns([
+        {
+          id: Object.keys(sortFields)[0],
+          desc: Object.values(sortFields)[0] === 1 ? false : true
+        }
+      ])
+    } else {
+      setSortColumns([
+        {
+          id: 'firstName',
+          desc: false
+        }
+      ])
+    }
+  }, [JSON.stringify(sortFields)])
+
   return (
     <div className="manage-accounts-container">
       <div className="manage-accounts-details-box container mx-auto">
@@ -267,6 +292,7 @@ const ManageAccountsView = () => {
               })
             }}
             selectedSorts={sortFields}
+            sortColumns={sortColumns}
           />
           <UserModal
             open={modalsState.editUser}

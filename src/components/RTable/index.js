@@ -17,15 +17,14 @@ const RTable = (props) => {
     columns,
     data: tableData,
     sortColumns,
-    // pageSizes = [10, 20, 30, 40, 50],
     defaultPageSize = 10,
     style = { minHeight: 400, width: '100%' },
-    manualPagination = false,
-    paginationComponent = <></>,
     manualSortBy = false,
     columnHeaderClick,
     selectedSorts = {}
   } = props
+
+  console.log('d', selectedSorts), console.log('asdf', sortColumns)
 
   const data = React.useMemo(() => [...tableData], [tableData, props])
   const tableInstance = useTable(
@@ -33,15 +32,11 @@ const RTable = (props) => {
       columns,
       data,
       initialState: {
-        hiddenColumns: columns.map((column) => {
-          if (column.show === false) return column.accessor || column.id
-        }),
         sortBy: sortColumns,
-        pageSize: defaultPageSize
+        pageSize: defaultPageSize,
+        pageIndex: 0
       },
-      disableSortRemove: true,
-      manualPagination,
-      manualSortBy
+      disableSortRemove: true
     },
     useGlobalFilter,
     useSortBy,
@@ -172,68 +167,54 @@ const RTable = (props) => {
           RUN TEST
         </Button>
       </div> */}
-      {manualPagination ? (
-        paginationComponent
-      ) : (
-        <div className="pagination-container mt-4">
-          <div className="pagination">
-            <PrimaryButton
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            >
-              {'<<'}
-            </PrimaryButton>{' '}
-            <PrimaryButton
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              {'<'}
-            </PrimaryButton>{' '}
-            <PrimaryButton onClick={() => nextPage()} disabled={!canNextPage}>
-              {'>'}
-            </PrimaryButton>{' '}
-            <PrimaryButton
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {'>>'}
-            </PrimaryButton>{' '}
-            <span>
-              Page{' '}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>{' '}
-            </span>
-            {/*<span>
-            | Go to page:{' '}
-            <input
-              type="number"
-              defaultValue={pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                gotoPage(page)
-              }}
-              style={{ width: '100px' }}
-            />
-          </span>{' '}*/}
-            <SelectBox1
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value))
-              }}
-              className="mt-0"
-              options={[
-                { label: 'Show 5', value: 5 },
-                { label: 'Show 10', value: 10 },
-                { label: 'Show 20', value: 20 },
-                { label: 'Show 30', value: 30 },
-                { label: 'Show 40', value: 40 },
-                { label: 'Show 50', value: 50 }
-              ]}
-            />
-          </div>
+
+      <div className="pagination-container mt-4">
+        <div className="pagination">
+          <PrimaryButton
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
+            {'<<'}
+          </PrimaryButton>{' '}
+          <PrimaryButton
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            {'<'}
+          </PrimaryButton>{' '}
+          <PrimaryButton onClick={() => nextPage()} disabled={!canNextPage}>
+            {'>'}
+          </PrimaryButton>{' '}
+          <PrimaryButton
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'>>'}
+          </PrimaryButton>{' '}
+          <span>
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{' '}
+          </span>
+          <SelectBox1
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value))
+            }}
+            className="mt-0"
+            options={[
+              { label: 'Show 5', value: 5 },
+              { label: 'Show 10', value: 10 },
+              { label: 'Show 20', value: 20 },
+              { label: 'Show 30', value: 30 },
+              { label: 'Show 40', value: 40 },
+              { label: 'Show 50', value: 50 }
+            ]}
+          />
         </div>
-      )}
+      </div>
+
       <Modal open={test} onClose={() => setTest(false)}>
         <Box sx={styles}>
           <Typography
