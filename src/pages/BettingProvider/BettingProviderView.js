@@ -1,74 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import { Chip, CircularProgress, Typography } from '@mui/material'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { PrimaryButton } from 'components/StyledButton'
-import { newUserFields, changePasswordFields, filterFields } from './constants'
-import { getAPIService } from 'services/apiServices'
-import APIConstants from 'services/CONSTANTS'
+import { newFields } from './constants'
+// import { getAPIService } from 'services/apiServices'
+// import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import UserModal from './components/UserModal'
-import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
-import { removeKeysFromObject } from 'utils/convertors'
+
+import { bettingProvidersData } from 'data'
 
 const BettingProviderView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
 
   const initialUserState = () => {
-    return Object.keys(newUserFields).reduce((allFields, field) => {
-      switch (field) {
-        case 'password': {
-          allFields[field] = Math.random().toString(36).slice(2, 10)
-          break
-        }
-        default: {
-          allFields[field] = newUserFields[field].kind === '0' ? '-1' : ''
-        }
-      }
-      return allFields
-    }, {})
-  }
-  const initialFilterState = () => {
-    return Object.keys(filterFields).reduce((allFields, field) => {
-      allFields[field] = filterFields[field].kind === 'Select' ? '-1' : ''
+    return Object.keys(newFields).reduce((allFields, field) => {
+      allFields[field] = newFields[field].kind === '0' ? '-1' : ''
       return allFields
     }, {})
   }
 
   const initialErrorState = () => {
-    return Object.keys({ ...newUserFields, ...changePasswordFields }).reduce(
-      (allFields, field) => {
-        allFields[field] = false
-        return allFields
-      },
-      {}
-    )
+    return Object.keys({ ...newFields }).reduce((allFields, field) => {
+      allFields[field] = false
+      return allFields
+    }, {})
   }
+
   const [userData, setUserData] = useState(initialUserState)
-  const [filterData, setFilterData] = useState(initialFilterState)
   const [errors, setErrors] = useState(initialErrorState)
-  const [helperTexts, setHelperTexts] = useState(() => {
-    return Object.keys({ ...newUserFields, ...changePasswordFields }).reduce(
-      (allFields, field) => {
-        allFields[field] = `${
-          { ...newUserFields, ...changePasswordFields }[field].label
-        } is required`
-        return allFields
-      },
-      {}
-    )
-  })
 
   const [availableUsers, setAvailableUsers] = useState({
     totalUsers: 0,
     totalPages: 1,
-    usersData: []
+    data: []
   })
   const [modalsState, setModalsState] = useState({
     createUser: false,
     editUser: false,
-    changeUserPassword: false,
     deleteUser: false,
     filter: false
   })
@@ -82,13 +52,13 @@ const BettingProviderView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      const data = await getAPIService(APIConstants.GET_USERS, {
-        ...paginationOptions,
-        // searchAccount: searchAccount,
-        filter: filterData,
-        sortFields: sortFields
-      })
-      setAvailableUsers(data)
+      // const data = await getAPIService(APIConstants.GET_USERS, {
+      //   ...paginationOptions,
+      //   // searchAccount: searchAccount,
+      //   filter: filterData,
+      //   sortFields: sortFields
+      // })
+      setAvailableUsers(bettingProvidersData)
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -102,38 +72,55 @@ const BettingProviderView = () => {
   const [loading, setLoading] = useState('')
 
   useEffect(() => {
-    document.title = 'Betting Provider'
+    document.title = 'Betting-Users'
   }, [])
 
   useEffect(() => {
     getUsers()
   }, [paginationOptions, sortFields])
 
-  useEffect(() => {
-    setPaginationOptions({
-      page: 1,
-      limit: 10
-    })
-    getUsers()
-  }, [filterData])
+  // useEffect(() => {
+  //   if (!modalsState.editUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.editUser])
+
+  // useEffect(() => {
+  //   if (!modalsState.deleteUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.deleteUser])
+
+  // useEffect(() => {
+  //   if (!modalsState.createUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.createUser])
+
+  const [sortColumns, setSortColumns] = useState([
+    {
+      id: 'firstName',
+      desc: false
+    }
+  ])
 
   useEffect(() => {
-    if (!modalsState.editUser) {
-      getUsers()
+    if (JSON.stringify(sortFields) !== JSON.stringify({})) {
+      setSortColumns([
+        {
+          id: Object.keys(sortFields)[0],
+          desc: Object.values(sortFields)[0] === 1 ? false : true
+        }
+      ])
+    } else {
+      setSortColumns([
+        {
+          id: 'name',
+          desc: false
+        }
+      ])
     }
-  }, [modalsState.editUser])
-
-  useEffect(() => {
-    if (!modalsState.deleteUser) {
-      getUsers()
-    }
-  }, [modalsState.deleteUser])
-
-  useEffect(() => {
-    if (!modalsState.createUser) {
-      getUsers()
-    }
-  }, [modalsState.createUser])
+  }, [JSON.stringify(sortFields)])
 
   return (
     <div className="manage-accounts-container">
@@ -141,8 +128,8 @@ const BettingProviderView = () => {
         <div className="d-flex mt-2 mb-4 justify-content-between">
           <div>
             <Typography variant="h5" component="h5" className="onyx main-font">
-              BETTING PROVIDERS{' '}
-              <Chip label={`${availableUsers.totalUsers}`} color="primary" />
+              Bettng Providers{' '}
+              <Chip label={`${availableUsers.total}`} color="primary" />
             </Typography>
             {isLoading && (
               <CircularProgress
@@ -161,15 +148,11 @@ const BettingProviderView = () => {
                 })
               }
             >
-              CREATE PROVIDER
+              New Provider
             </PrimaryButton>
           </div>
         </div>
         <div>
-          <FilterAltIcon
-            sx={{ cursor: 'pointer' }}
-            onClick={() => setModalsState({ ...modalsState, filter: true })}
-          />
           <UserTableWrapper
             data={availableUsers}
             pageLimit={paginationOptions.limit}
@@ -183,13 +166,6 @@ const BettingProviderView = () => {
               setModalsState({
                 ...modalsState,
                 editUser: true
-              })
-              setCurrentlyEditingUser(rowData.original)
-            }}
-            onPasswordUpdate={(rowData) => {
-              setModalsState({
-                ...modalsState,
-                changeUserPassword: true
               })
               setCurrentlyEditingUser(rowData.original)
             }}
@@ -208,28 +184,42 @@ const BettingProviderView = () => {
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  getAPIService(APIConstants.DELETE_USER, {
-                    editUserId: rowData.original._id,
-                    email: rowData.original.email
+                  let data = bettingProvidersData
+                  data.data = data.data.filter(
+                    (item) => item.id !== rowData.original.id
+                  )
+                  setModalsState({
+                    ...modalsState,
+                    deleteUser: false
                   })
-                    .then(() => {
-                      setModalsState({
-                        ...modalsState,
-                        deleteUser: false
-                      })
-                      Swal.fire(
-                        'User Deleted!',
-                        'User has been deleted.',
-                        'success'
-                      )
-                    })
-                    .catch((err) => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: err
-                      })
-                    })
+                  Swal.fire(
+                    'Betting Provider Deleted!',
+                    'Betting Provider has been deleted.',
+                    'success'
+                  )
+                  setAvailableUsers(data)
+                  // getAPIService(APIConstants.DELETE_USER, {
+                  //   editUserId: rowData.original._id,
+                  //   email: rowData.original.email
+                  // })
+                  //   .then(() => {
+                  //     setModalsState({
+                  //       ...modalsState,
+                  //       deleteUser: false
+                  //     })
+                  //     Swal.fire(
+                  //       'User Deleted!',
+                  //       'User has been deleted.',
+                  //       'success'
+                  //     )
+                  //   })
+                  //   .catch((err) => {
+                  //     Swal.fire({
+                  //       icon: 'error',
+                  //       title: 'Oops...',
+                  //       text: err
+                  //     })
+                  //   })
                 }
               })
             }}
@@ -251,11 +241,12 @@ const BettingProviderView = () => {
               })
             }}
             selectedSorts={sortFields}
+            sortColumns={sortColumns}
           />
           <UserModal
             open={modalsState.editUser}
-            title={'Update User'}
-            sourceFields={removeKeysFromObject(newUserFields, ['password'])}
+            title={'Update'}
+            sourceFields={newFields}
             data={currentlyEditingUser}
             onSecondaryClick={() => {
               setModalsState({
@@ -265,77 +256,60 @@ const BettingProviderView = () => {
               setErrors(initialErrorState)
             }}
             onPrimaryClick={(updatedData) => {
-              const hasEmptyFields = Object.entries(updatedData)
-                .filter((x) => x[0] !== 'password')
-                .filter((x) => {
-                  if (updatedData['userType'] === 'interpreter') {
-                    return x[0] !== 'company'
-                  } else if (updatedData['userType'] === 'client') {
-                    return (
-                      x[0] !== 'availability' &&
-                      x[0] != 'experience' &&
-                      x[0] !== 'language'
-                    )
-                  } else if (updatedData['userType'] === 'admin') {
-                    return (
-                      x[0] !== 'company' &&
-                      x[0] !== 'availability' &&
-                      x[0] != 'experience' &&
-                      x[0] !== 'language'
-                    )
-                  }
-                })
-                .filter((x) => {
-                  return x[1] === '' || x[1] === '-1'
-                })
-              if (hasEmptyFields.length > 0) {
-                setErrors(() => {
-                  return Object.values(hasEmptyFields).reduce(
-                    (allFields, field) => {
-                      allFields[field[0]] = true
-                      return allFields
-                    },
-                    {}
-                  )
-                })
-              } else {
-                setLoading('UpdatingUser')
-                getAPIService(
-                  APIConstants.UPDATE_USER,
-                  {
-                    editUserId: updatedData._id,
-                    userData: { ...updatedData }
-                  },
-                  'PUT'
-                )
-                  .then(() => {
-                    setModalsState({
-                      ...modalsState,
-                      editUser: false
-                    })
-                    Swal.fire({
-                      icon: 'success',
-                      text: 'User Updated',
-                      showConfirmButton: false,
-                      timer: 1500
-                    })
-                    setLoading('')
-                  })
-                  .catch((err) => {
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Oops...',
-                      text: err
-                    })
-                    setLoading('')
-                  })
+              setLoading('UpdatingUser')
+              setModalsState({
+                ...modalsState,
+                editUser: false
+              })
+              let data = availableUsers
+              for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id === updatedData.id) {
+                  data.data[i] = updatedData
+                }
               }
+              setAvailableUsers(data)
+
+              Swal.fire({
+                icon: 'success',
+                text: 'Updated',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading('')
+              // getAPIService(
+              //   APIConstants.UPDATE_USER,
+              //   {
+              //     editUserId: updatedData._id,
+              //     userData: { ...updatedData }
+              //   },
+              //   'PUT'
+              // )
+              //   .then(() => {
+              //     setModalsState({
+              //       ...modalsState,
+              //       editUser: false
+              //     })
+              //     Swal.fire({
+              //       icon: 'success',
+              //       text: 'User Updated',
+              //       showConfirmButton: false,
+              //       timer: 1500
+              //     })
+              //     setLoading('')
+              //   })
+              //   .catch((err) => {
+              //     Swal.fire({
+              //       icon: 'error',
+              //       title: 'Oops...',
+              //       text: err
+              //     })
+              //     setLoading('')
+              //   })
             }}
             isLoading={loading === 'UpdatingUser'}
-            primaryActionName={'Update User'}
+            primaryActionName={'Update'}
             secondaryActionName={'Close'}
             errors={errors}
-            helperTexts={helperTexts}
             onFieldInteract={({ fieldName }) => {
               setErrors((prevState) => {
                 return {
@@ -345,178 +319,58 @@ const BettingProviderView = () => {
               })
             }}
           />
-          <UserModal
-            open={modalsState.changeUserPassword}
-            title={'Change Password'}
-            sourceFields={changePasswordFields}
-            data={{
-              ...currentlyEditingUser,
-              newPassword: '',
-              confirmPassword: ''
-            }}
-            onSecondaryClick={() => {
-              setModalsState({
-                ...modalsState,
-                changeUserPassword: false
-              })
-              setErrors(initialErrorState)
-            }}
-            onPrimaryClick={(newPasswordData) => {
-              const { newPassword, confirmPassword } = newPasswordData
-              if (!newPassword || !confirmPassword) {
-                setErrors((prevState) => {
-                  return {
-                    ...prevState,
-                    newPassword: newPassword === '',
-                    confirmPassword: confirmPassword === ''
-                  }
-                })
-                return
-              }
-              if (newPassword !== confirmPassword) {
-                setHelperTexts((prevState) => {
-                  return {
-                    ...prevState,
-                    confirmPassword:
-                      changePasswordFields.confirmPassword.helperTexts.mismatch
-                  }
-                })
-                setErrors((prevState) => {
-                  return {
-                    ...prevState,
-                    newPassword: false,
-                    confirmPassword: true
-                  }
-                })
-              } else {
-                setLoading('ChangingPassword')
-                getAPIService(
-                  APIConstants.CHANGE_USER_PASSWORD,
-                  {
-                    editUserId: newPasswordData._id,
-                    newPassword: newPasswordData.newPassword,
-                    confirmPassword: newPasswordData.confirmPassword
-                  },
-                  'PATCH'
-                )
-                  .then(() => {
-                    setModalsState({
-                      ...modalsState,
-                      changeUserPassword: false
-                    })
-                    setErrors((prevState) => {
-                      return {
-                        ...prevState,
-                        newPassword: false,
-                        confirmPassword: false
-                      }
-                    })
-                    Swal.fire({
-                      icon: 'success',
-                      text: 'Password Changed',
-                      showConfirmButton: false,
-                      timer: 1500
-                    })
-                    setLoading('')
-                  })
-                  .catch((err) => {
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Oops...',
-                      text: err
-                    })
-                    setLoading('')
-                  })
-              }
-            }}
-            isLoading={loading === 'ChangingPassword'}
-            primaryActionName={'Update Password'}
-            secondaryActionName={'Close'}
-            errors={errors}
-            helperTexts={helperTexts}
-            onFieldInteract={({ fieldName }) => {
-              if (errors[fieldName]) {
-                setErrors((prevState) => {
-                  return {
-                    ...prevState,
-                    [fieldName]: false
-                  }
-                })
-              }
-            }}
-          />
         </div>
       </div>
       <UserModal
         open={modalsState.createUser}
-        title={'Create New User'}
-        sourceFields={newUserFields}
+        title={'Create New Betting Provider'}
+        sourceFields={newFields}
         data={userData}
         primaryActionName={'Create'}
         secondaryActionName={'Close'}
         onPrimaryClick={(newUserData) => {
-          const hasEmptyFields = Object.entries(newUserData)
-            .filter((x) => x[0] !== 'password')
-            .filter((x) => {
-              if (newUserData['userType'] === 'interpreter') {
-                return x[0] !== 'company'
-              } else if (newUserData['userType'] === 'client') {
-                return (
-                  x[0] !== 'availability' &&
-                  x[0] != 'experience' &&
-                  x[0] !== 'language'
-                )
-              } else if (newUserData['userType'] === 'admin') {
-                return (
-                  x[0] !== 'company' &&
-                  x[0] !== 'availability' &&
-                  x[0] != 'experience' &&
-                  x[0] !== 'language'
-                )
-              }
-            })
-            .filter((x) => {
-              return x[1] === '' || x[1] === '-1'
-            })
-          if (hasEmptyFields.length > 0) {
-            console.log(hasEmptyFields, 'hasEmptyFields')
-            setErrors(() => {
-              return Object.values(hasEmptyFields).reduce(
-                (allFields, field) => {
-                  allFields[field[0]] = true
-                  return allFields
-                },
-                {}
-              )
-            })
-          } else {
-            setLoading('CreatingUser')
-            getAPIService(APIConstants.REGISTER, newUserData)
-              .then(() => {
-                setUserData(initialUserState)
-                Swal.fire({
-                  icon: 'success',
-                  text: 'User Created',
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-                setLoading('')
-              })
-              .catch((err) => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: err
-                })
-                setLoading('')
-              })
-              .finally(() => {
-                setModalsState({
-                  ...modalsState,
-                  createUser: false
-                })
-              })
-          }
+          newUserData.id = Math.random()
+          setLoading('CreatingUser')
+          let data = availableUsers
+          data.data.push(newUserData)
+          setAvailableUsers(data)
+          setUserData(initialUserState)
+          Swal.fire({
+            icon: 'success',
+            text: 'User Created',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          setLoading('')
+          setModalsState({
+            ...modalsState,
+            createUser: false
+          })
+          // getAPIService(APIConstants.REGISTER, newUserData)
+          //   .then(() => {
+          //     setUserData(initialUserState)
+          //     Swal.fire({
+          //       icon: 'success',
+          //       text: 'User Created',
+          //       showConfirmButton: false,
+          //       timer: 1500
+          //     })
+          //     setLoading('')
+          //   })
+          //   .catch((err) => {
+          //     Swal.fire({
+          //       icon: 'error',
+          //       title: 'Oops...',
+          //       text: err
+          //     })
+          //     setLoading('')
+          //   })
+          //   .finally(() => {
+          //     setModalsState({
+          //       ...modalsState,
+          //       createUser: false
+          //     })
+          //   })
         }}
         isLoading={loading === 'CreatingUser'}
         onSecondaryClick={() => {
@@ -527,37 +381,12 @@ const BettingProviderView = () => {
           setErrors(initialErrorState)
         }}
         errors={errors}
-        helperTexts={helperTexts}
         onFieldInteract={({ fieldName }) => {
           setErrors((prevState) => {
             return {
               ...prevState,
               [fieldName]: false
             }
-          })
-        }}
-      />
-      <FilterModal
-        open={modalsState.filter}
-        title={'Filter'}
-        sourceFields={filterFields}
-        data={filterData}
-        primaryActionName={'Filter'}
-        secondaryActionName={'Close'}
-        onPrimaryClick={(newFilterData) => {
-          // setLoading('filtering')
-          setFilterData(newFilterData)
-          setModalsState({
-            ...modalsState,
-            filter: false
-          })
-          getUsers()
-        }}
-        isLoading={loading === 'filtering'}
-        onSecondaryClick={() => {
-          setModalsState({
-            ...modalsState,
-            filter: false
           })
         }}
       />

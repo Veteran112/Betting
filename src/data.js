@@ -47,4 +47,21 @@ const availableUsersData = {
   ]
 }
 
-export { availableUsersData }
+const bettingProvidersData = {
+  total: 3,
+  totalPages: 1,
+  data: [
+    {
+      id: 1,
+      name: 'xxx',
+      url: 'aaaaaa'
+    },
+    {
+      id: 2,
+      name: 'yyyxxx',
+      url: 'bbbaaaaaa'
+    }
+  ]
+}
+
+export { availableUsersData, bettingProvidersData }
