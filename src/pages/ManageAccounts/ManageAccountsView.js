@@ -11,6 +11,8 @@ import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
 import { removeKeysFromObject } from 'utils/convertors'
 
+import { availableUsersData } from 'data'
+
 const ManageAccountsView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
@@ -82,13 +84,13 @@ const ManageAccountsView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      const data = await getAPIService(APIConstants.GET_USERS, {
-        ...paginationOptions,
-        // searchAccount: searchAccount,
-        filter: filterData,
-        sortFields: sortFields
-      })
-      setAvailableUsers(data)
+      // const data = await getAPIService(APIConstants.GET_USERS, {
+      //   ...paginationOptions,
+      //   // searchAccount: searchAccount,
+      //   filter: filterData,
+      //   sortFields: sortFields
+      // })
+      setAvailableUsers(availableUsersData)
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -117,23 +119,23 @@ const ManageAccountsView = () => {
     getUsers()
   }, [filterData])
 
-  useEffect(() => {
-    if (!modalsState.editUser) {
-      getUsers()
-    }
-  }, [modalsState.editUser])
+  // useEffect(() => {
+  //   if (!modalsState.editUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.editUser])
 
-  useEffect(() => {
-    if (!modalsState.deleteUser) {
-      getUsers()
-    }
-  }, [modalsState.deleteUser])
+  // useEffect(() => {
+  //   if (!modalsState.deleteUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.deleteUser])
 
-  useEffect(() => {
-    if (!modalsState.createUser) {
-      getUsers()
-    }
-  }, [modalsState.createUser])
+  // useEffect(() => {
+  //   if (!modalsState.createUser) {
+  //     getUsers()
+  //   }
+  // }, [modalsState.createUser])
 
   return (
     <div className="manage-accounts-container">
@@ -208,28 +210,42 @@ const ManageAccountsView = () => {
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  getAPIService(APIConstants.DELETE_USER, {
-                    editUserId: rowData.original._id,
-                    email: rowData.original.email
+                  let data = availableUsersData
+                  data.usersData = data.usersData.filter(
+                    (item) => item.id !== rowData.original.id
+                  )
+                  setModalsState({
+                    ...modalsState,
+                    deleteUser: false
                   })
-                    .then(() => {
-                      setModalsState({
-                        ...modalsState,
-                        deleteUser: false
-                      })
-                      Swal.fire(
-                        'User Deleted!',
-                        'User has been deleted.',
-                        'success'
-                      )
-                    })
-                    .catch((err) => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: err
-                      })
-                    })
+                  Swal.fire(
+                    'User Deleted!',
+                    'User has been deleted.',
+                    'success'
+                  )
+                  setAvailableUsers(data)
+                  // getAPIService(APIConstants.DELETE_USER, {
+                  //   editUserId: rowData.original._id,
+                  //   email: rowData.original.email
+                  // })
+                  //   .then(() => {
+                  //     setModalsState({
+                  //       ...modalsState,
+                  //       deleteUser: false
+                  //     })
+                  //     Swal.fire(
+                  //       'User Deleted!',
+                  //       'User has been deleted.',
+                  //       'success'
+                  //     )
+                  //   })
+                  //   .catch((err) => {
+                  //     Swal.fire({
+                  //       icon: 'error',
+                  //       title: 'Oops...',
+                  //       text: err
+                  //     })
+                  //   })
                 }
               })
             }}
@@ -265,71 +281,55 @@ const ManageAccountsView = () => {
               setErrors(initialErrorState)
             }}
             onPrimaryClick={(updatedData) => {
-              const hasEmptyFields = Object.entries(updatedData)
-                .filter((x) => x[0] !== 'password')
-                .filter((x) => {
-                  if (updatedData['userType'] === 'interpreter') {
-                    return x[0] !== 'company'
-                  } else if (updatedData['userType'] === 'client') {
-                    return (
-                      x[0] !== 'availability' &&
-                      x[0] != 'experience' &&
-                      x[0] !== 'language'
-                    )
-                  } else if (updatedData['userType'] === 'admin') {
-                    return (
-                      x[0] !== 'company' &&
-                      x[0] !== 'availability' &&
-                      x[0] != 'experience' &&
-                      x[0] !== 'language'
-                    )
-                  }
-                })
-                .filter((x) => {
-                  return x[1] === '' || x[1] === '-1'
-                })
-              if (hasEmptyFields.length > 0) {
-                setErrors(() => {
-                  return Object.values(hasEmptyFields).reduce(
-                    (allFields, field) => {
-                      allFields[field[0]] = true
-                      return allFields
-                    },
-                    {}
-                  )
-                })
-              } else {
-                setLoading('UpdatingUser')
-                getAPIService(
-                  APIConstants.UPDATE_USER,
-                  {
-                    editUserId: updatedData._id,
-                    userData: { ...updatedData }
-                  },
-                  'PUT'
-                )
-                  .then(() => {
-                    setModalsState({
-                      ...modalsState,
-                      editUser: false
-                    })
-                    Swal.fire({
-                      icon: 'success',
-                      text: 'User Updated',
-                      showConfirmButton: false,
-                      timer: 1500
-                    })
-                    setLoading('')
-                  })
-                  .catch((err) => {
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Oops...',
-                      text: err
-                    })
-                    setLoading('')
-                  })
+              setLoading('UpdatingUser')
+              setModalsState({
+                ...modalsState,
+                editUser: false
+              })
+              let data = availableUsers
+              for (let i = 0; i < data.usersData.length; i++) {
+                if (data.usersData[i].id === updatedData.id) {
+                  data.usersData[i] = updatedData
+                }
               }
+              setAvailableUsers(data)
+
+              Swal.fire({
+                icon: 'success',
+                text: 'User Updated',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading('')
+              // getAPIService(
+              //   APIConstants.UPDATE_USER,
+              //   {
+              //     editUserId: updatedData._id,
+              //     userData: { ...updatedData }
+              //   },
+              //   'PUT'
+              // )
+              //   .then(() => {
+              //     setModalsState({
+              //       ...modalsState,
+              //       editUser: false
+              //     })
+              //     Swal.fire({
+              //       icon: 'success',
+              //       text: 'User Updated',
+              //       showConfirmButton: false,
+              //       timer: 1500
+              //     })
+              //     setLoading('')
+              //   })
+              //   .catch((err) => {
+              //     Swal.fire({
+              //       icon: 'error',
+              //       title: 'Oops...',
+              //       text: err
+              //     })
+              //     setLoading('')
+              //   })
             }}
             isLoading={loading === 'UpdatingUser'}
             primaryActionName={'Update User'}
@@ -455,68 +455,48 @@ const ManageAccountsView = () => {
         primaryActionName={'Create'}
         secondaryActionName={'Close'}
         onPrimaryClick={(newUserData) => {
-          const hasEmptyFields = Object.entries(newUserData)
-            .filter((x) => x[0] !== 'password')
-            .filter((x) => {
-              if (newUserData['userType'] === 'interpreter') {
-                return x[0] !== 'company'
-              } else if (newUserData['userType'] === 'client') {
-                return (
-                  x[0] !== 'availability' &&
-                  x[0] != 'experience' &&
-                  x[0] !== 'language'
-                )
-              } else if (newUserData['userType'] === 'admin') {
-                return (
-                  x[0] !== 'company' &&
-                  x[0] !== 'availability' &&
-                  x[0] != 'experience' &&
-                  x[0] !== 'language'
-                )
-              }
-            })
-            .filter((x) => {
-              return x[1] === '' || x[1] === '-1'
-            })
-          if (hasEmptyFields.length > 0) {
-            console.log(hasEmptyFields, 'hasEmptyFields')
-            setErrors(() => {
-              return Object.values(hasEmptyFields).reduce(
-                (allFields, field) => {
-                  allFields[field[0]] = true
-                  return allFields
-                },
-                {}
-              )
-            })
-          } else {
-            setLoading('CreatingUser')
-            getAPIService(APIConstants.REGISTER, newUserData)
-              .then(() => {
-                setUserData(initialUserState)
-                Swal.fire({
-                  icon: 'success',
-                  text: 'User Created',
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-                setLoading('')
-              })
-              .catch((err) => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: err
-                })
-                setLoading('')
-              })
-              .finally(() => {
-                setModalsState({
-                  ...modalsState,
-                  createUser: false
-                })
-              })
-          }
+          newUserData.id = Math.random()
+          setLoading('CreatingUser')
+          let data = availableUsers
+          data.usersData.push(newUserData)
+          setAvailableUsers(data)
+          setUserData(initialUserState)
+          Swal.fire({
+            icon: 'success',
+            text: 'User Created',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          setLoading('')
+          setModalsState({
+            ...modalsState,
+            createUser: false
+          })
+          // getAPIService(APIConstants.REGISTER, newUserData)
+          //   .then(() => {
+          //     setUserData(initialUserState)
+          //     Swal.fire({
+          //       icon: 'success',
+          //       text: 'User Created',
+          //       showConfirmButton: false,
+          //       timer: 1500
+          //     })
+          //     setLoading('')
+          //   })
+          //   .catch((err) => {
+          //     Swal.fire({
+          //       icon: 'error',
+          //       title: 'Oops...',
+          //       text: err
+          //     })
+          //     setLoading('')
+          //   })
+          //   .finally(() => {
+          //     setModalsState({
+          //       ...modalsState,
+          //       createUser: false
+          //     })
+          //   })
         }}
         isLoading={loading === 'CreatingUser'}
         onSecondaryClick={() => {

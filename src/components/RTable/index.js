@@ -9,7 +9,8 @@ import './index.scss'
 import PropTypes from 'prop-types'
 import { PrimaryButton } from '../StyledButton'
 import SelectBox1 from '../SelectBox1'
-import { Button, Modal, TextField, Typography, Box } from '@mui/material'
+// import { Button, Modal, TextField, Typography, Box } from '@mui/material'
+import { Modal, Typography, Box } from '@mui/material'
 
 const RTable = (props) => {
   const {
@@ -21,7 +22,6 @@ const RTable = (props) => {
     style = { minHeight: 400, width: '100%' },
     manualPagination = false,
     paginationComponent = <></>,
-    recordIncreaseNumber,
     manualSortBy = false,
     columnHeaderClick,
     selectedSorts = {}
@@ -142,65 +142,36 @@ const RTable = (props) => {
             ))
           }
         </thead>
-        {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
-          {
-            // Loop over the table rows
-            page.map((row, rowKey) => {
-              // Prepare the row for display
-              row.serial =
-                recordIncreaseNumber > 1
-                  ? recordIncreaseNumber + (rowKey + 1)
-                  : rowKey + 1 // Added Custom serial number to the table
-              prepareRow(row)
-              return (
-                // Apply the row props
-                <tr {...row.getRowProps({ key: rowKey })} key={rowKey}>
-                  {
-                    // Loop over the rows cells
-                    <>
-                      <td>
-                        {
-                          // Render the cell contents
-                          rowKey + 1
-                        }
-                      </td>
-                      <td>
-                        {
-                          // Render the cell contents
-                          row.original
-                        }
-                      </td>
-                      <td
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <Button className="btn">EDIT</Button>
-                        <Button className="btn">DELETE</Button>
-                      </td>
-                    </>
-                  }
-                </tr>
-              )
-            })
-          }
+          {page.map((row, i) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()} key={i}>
+                {row.cells.map((cell, index) => {
+                  return (
+                    <td {...cell.getCellProps()} key={index}>
+                      {cell.render('Cell')}
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
-      <div className="d-flex justify-content-between">
-        <Typography className="command">Command: </Typography>
+      {/* <div className="d-flex justify-content-between">
+        <Typography className="mt-4">Command: </Typography>
         <TextField
-          style={{ marginTop: '30px' }}
+          style={{ marginTop: '20px' }}
           defaultValue=""
           id="outlined-helperText"
           label="Command"
         ></TextField>
-        <Button className="_btn">+ADD COMMAND</Button>
-        <Button className="_btn" onClick={() => setTest(true)}>
+        <Button className="_btn mt-4">+ADD COMMAND</Button>
+        <Button className="_btn mt-4" onClick={() => setTest(true)}>
           RUN TEST
         </Button>
-      </div>
+      </div> */}
       {manualPagination ? (
         paginationComponent
       ) : (

@@ -1,13 +1,14 @@
 .r-table {
-
   &.r-table-full {
     width: 100%;
   }
-  table, th, td {
+  table,
+  th,
+  td {
     border: 1px solid black;
     border-collapse: collapse;
   }
-  
+
   thead {
     tr {
       border-bottom: 1px solid #c9d0d5;
@@ -20,11 +21,11 @@
   tbody {
     tr {
       border-bottom: 1px solid #c9d0d5;
-      font-family: "WorkSans";
+      font-family: 'WorkSans';
       font-size: 16px;
       color: #4d5154;
       line-height: 140%;
-      font-variation-settings: "wght" 700;
+      font-variation-settings: 'wght' 700;
 
       td {
         padding: 0.5rem;
@@ -33,9 +34,9 @@
           font-size: 13px;
 
           i {
-            color: #004C8E;
+            color: #004c8e;
             &:hover {
-              color: #005CB9;
+              color: #005cb9;
             }
           }
         }
@@ -67,7 +68,6 @@
   background: rgb(0, 81, 255) !important;
   color: white;
   height: 50px;
-  margin-top: 30px;
 }
 
 .testModal {

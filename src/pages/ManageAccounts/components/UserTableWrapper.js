@@ -2,30 +2,14 @@ import React from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
 import Pagination from 'components/RTable/pagination'
-// import { useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material'
 
 const UserTableWrapper = (props) => {
-  // const navigate = useNavigate()
-  // const availabilities = [
-  //   { label: 'Available', class: 'available' },
-  //   { label: 'Unavailable', class: 'unavailable' },
-  //   { label: 'Scheduled', class: 'scheduled' }
-  // ]
-
   const columns = React.useMemo(
     () => [
       {
-        Header: 'No',
-        accessor: 'no',
-        disableSortBy: true,
-        Cell: (props) => {
-          return <span>{props.row.serial}</span>
-        }
-      },
-      {
         Header: 'First Name',
-        accessor: 'firstName', // accessor is the "key" in the data
-        disableSortBy: true
+        accessor: 'firstName'
       },
       {
         Header: 'Last Name',
@@ -39,102 +23,49 @@ const UserTableWrapper = (props) => {
       },
       {
         Header: 'Password',
-        accessor: 'phone',
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ row }) => {
+          return (
+            <>
+              <Button
+                className="_btn w-100"
+                onClick={() => props.onPasswordUpdate(row)}
+              >
+                CHANGE PASSWORD
+              </Button>
+            </>
+          )
+        }
       },
       {
         Header: 'Status',
-        accessor: 'language',
+        accessor: 'status',
         disableSortBy: true,
         Cell: ({ row }) => {
-          if (row.original.userType === 'interpreter') {
-            return <span>{row.original.language}</span>
-          } else {
-            return <></>
-          }
+          return (
+            <>
+              {row.original.status}
+              <Button className="_btn ml-2">BLOCK</Button>
+            </>
+          )
         }
       },
       {
         Header: ' ',
-        accessor: 'userType',
         disableSortBy: true,
-        Cell: (props) => {
+        Cell: ({ row }) => {
           return (
-            <span>
-              {props.row.values.userType
-                .split('_')
-                .map((x) => x[0].toUpperCase() + x.substring(1))
-                .join(' ')}
-            </span>
+            <>
+              <Button className="_btn" onClick={() => props.onEdit(row)}>
+                EDIT USER
+              </Button>
+              <Button className="_btn ml-2" onClick={() => props.onDelete(row)}>
+                DELETE USER
+              </Button>
+            </>
           )
         }
       }
-      //   {
-      //     Header: 'Availability',
-      //     accessor: 'availability',
-      //     disableSortBy: true,
-      //     Cell: ({ row }) => {
-      //       if (row.original.userType === 'interpreter') {
-      //         const availibilityObject =
-      //           availabilities[Number(row.original.availability)]
-      //         return (
-      //           <span className={availibilityObject.class}>
-      //             {availibilityObject.label}
-      //           </span>
-      //         )
-      //       } else {
-      //         return <></>
-      //       }
-      //     }
-      //   },
-      //   {
-      //     Header: 'Actions',
-      //     accessor: 'actions',
-      //     disableSortBy: true,
-      //     Cell: ({ row }) => (
-      //       <span className="action-items-wrapper">
-      //         {row.original.userType === 'interpreter' && (
-      //           <span
-      //             className="pl-2 t-fontawesome"
-      //             onClick={() => {
-      //               navigate(`/manage_users/${row.original._id}`)
-      //             }}
-      //           >
-      //             <i className="fa fa-clock text-primary cursor-pointer" />
-      //           </span>
-      //         )}
-      //         <span
-      //           className="pl-2 t-fontawesome"
-      //           onClick={() => {
-      //             props.onEdit(row)
-      //           }}
-      //         >
-      //           <i className="fa fa-edit text-primary cursor-pointer" />
-      //         </span>
-      //         <span
-      //           className="pl-2 t-fontawesome"
-      //           onClick={() => {
-      //             props.onPasswordUpdate(row)
-      //           }}
-      //         >
-      //           <i className="fas fa-key text-info cursor-pointer" />
-      //         </span>
-      //         <span
-      //           className="pl-2 t-fontawesome"
-      //           onClick={() => {
-      //             props.onDelete(row)
-      //           }}
-      //         >
-      //           <i className="fa fa-trash-alt text-danger cursor-pointer" />
-      //         </span>
-      //       </span>
-      //     )
-      //   },
-      //   {
-      //     Header: 'Created At',
-      //     accessor: 'createdAt',
-      //     show: false
-      //   }
     ],
     []
   )
@@ -148,14 +79,12 @@ const UserTableWrapper = (props) => {
     ]
   }, [])
 
-  // const [globalFilterValue, setGlobalFilterValue] = useState()
   return (
     <>
       <RTable
         data={props.data.usersData}
         columns={columns}
         sortColumns={sortColumns}
-        //setGlobalFilterValue={globalFilterValue}
         style={{ height: 'auto' }}
         manualPagination={true}
         manualSortBy={true}
