@@ -64,4 +64,27 @@ const bettingProvidersData = {
   ]
 }
 
-export { availableUsersData, bettingProvidersData }
+const providersData = {
+  total: 4,
+  totalPages: 1,
+  data: [
+    {
+      id: 1,
+      command: '[NAVIGATE] https://bet123/login'
+    },
+    {
+      id: 2,
+      command: '[USERNAME] FFFFFFFFFF'
+    },
+    {
+      id: 3,
+      command: '[PASSWORD] FFFFFFFFFF'
+    },
+    {
+      id: 4,
+      command: '[NAVIGATE] https://bet123/quotes'
+    }
+  ]
+}
+
+export { availableUsersData, bettingProvidersData, providersData }
