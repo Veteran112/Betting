@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
 import { Button } from '@mui/material'
+import TestModal from './TestModal'
 
 const UserTableWrapper = (props) => {
+  const [testModal, openTestModal] = useState(false)
   const columns = React.useMemo(
     () => [
       {
@@ -67,6 +69,13 @@ const UserTableWrapper = (props) => {
         }}
         selectedSorts={props.selectedSorts}
       />
+      <Button
+        className="_btn float-right"
+        onClick={() => openTestModal(!testModal)}
+      >
+        RUN TEST
+      </Button>
+      <TestModal open={testModal} onClose={() => openTestModal(false)} />
     </>
   )
 }
