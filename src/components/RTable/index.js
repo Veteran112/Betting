@@ -24,8 +24,6 @@ const RTable = (props) => {
     selectedSorts = {}
   } = props
 
-  console.log('d', selectedSorts), console.log('asdf', sortColumns)
-
   const data = React.useMemo(() => [...tableData], [tableData, props])
   const tableInstance = useTable(
     {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Chip, CircularProgress, Typography } from '@mui/material'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { PrimaryButton } from 'components/StyledButton'
 import { newUserFields, changePasswordFields, filterFields } from './constants'
 import { getAPIService } from 'services/apiServices'
@@ -193,10 +192,6 @@ const ManageAccountsView = () => {
           </div>
         </div>
         <div>
-          <FilterAltIcon
-            sx={{ cursor: 'pointer' }}
-            onClick={() => setModalsState({ ...modalsState, filter: true })}
-          />
           <UserTableWrapper
             data={availableUsers}
             pageLimit={paginationOptions.limit}
