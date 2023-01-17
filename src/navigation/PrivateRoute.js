@@ -12,8 +12,7 @@ function PrivateRoute({ children }) {
     let isLoggedIn = false
     if (token) {
       const payload = jwt(token)
-      console.log(payload, Date.now())
-      if (payload.expire > Date.now()) {
+      if (payload.iat) {
         isLoggedIn = true
       }
     }

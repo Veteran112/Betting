@@ -4,43 +4,43 @@ const availableUsersData = {
   usersData: [
     {
       id: 1,
-      firstName: 'user1',
-      lastName: 'user11',
+      fname: 'user1',
+      lname: 'user11',
       email: 'user1.test.io',
       status: 'active'
     },
     {
       id: 2,
-      firstName: 'user2',
-      lastName: 'user21',
+      fname: 'user2',
+      lname: 'user21',
       email: 'user2.test.io',
       status: 'active'
     },
     {
       id: 3,
-      firstName: 'user3',
-      lastName: 'user31',
+      fname: 'user3',
+      lname: 'user31',
       email: 'user3.test.io',
       status: 'active'
     },
     {
       id: 4,
-      firstName: 'user4',
-      lastName: 'user41',
+      fname: 'user4',
+      lname: 'user41',
       email: 'user4.test.io',
       status: 'active'
     },
     {
       id: 5,
-      firstName: 'user4',
-      lastName: 'user41',
+      fname: 'user4',
+      lname: 'user41',
       email: 'user4.test.io',
       status: 'active'
     },
     {
       id: 6,
-      firstName: 'user4',
-      lastName: 'user41',
+      fname: 'user4',
+      lname: 'user41',
       email: 'user4.test.io',
       status: 'active'
     }

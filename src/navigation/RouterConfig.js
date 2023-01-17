@@ -39,36 +39,36 @@ export const RouterConfig = () => {
             exact
             path="/betting_provider"
             element={
-              // <PrivateRoute>
-              <>
-                <Navbar />
-                <BettingProvider />
-              </>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <>
+                  <Navbar />
+                  <BettingProvider />
+                </>
+              </PrivateRoute>
             }
           />
           <Route
             exact
             path="/provider"
             element={
-              // <PrivateRoute>
-              <>
-                <Navbar />
-                <Provider />
-              </>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <>
+                  <Navbar />
+                  <Provider />
+                </>
+              </PrivateRoute>
             }
           />
           <Route
             exact
             path="/manage_users"
             element={
-              // <PrivateRoute>
-              <>
-                <Navbar />
-                <ManageAccounts />
-              </>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <>
+                  <Navbar />
+                  <ManageAccounts />
+                </>
+              </PrivateRoute>
             }
           />
           <Route
@@ -97,36 +97,36 @@ export const RouterConfig = () => {
             exact
             path="/dashboard"
             element={
-              // <PrivateRoute>
-              <div>
-                <Navbar />
-                <Dashboard />
-              </div>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <div>
+                  <Navbar />
+                  <Dashboard />
+                </div>
+              </PrivateRoute>
             }
           />
           <Route
             exact
             path="/bet"
             element={
-              // <PrivateRoute>
-              <div>
-                <Navbar />
-                <Bet />
-              </div>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <div>
+                  <Navbar />
+                  <Bet />
+                </div>
+              </PrivateRoute>
             }
           />
           <Route
             exact
             path="/history"
             element={
-              // <PrivateRoute>
-              <div>
-                <Navbar />
-                <BetHistory />
-              </div>
-              // </PrivateRoute>
+              <PrivateRoute>
+                <div>
+                  <Navbar />
+                  <BetHistory />
+                </div>
+              </PrivateRoute>
             }
           />
           <Route path="*" element={<Navigate to={'/'} />} />

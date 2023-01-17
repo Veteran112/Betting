@@ -10,8 +10,6 @@ import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
 import { removeKeysFromObject } from 'utils/convertors'
 
-import { availableUsersData } from 'data'
-
 const ManageAccountsView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
@@ -83,13 +81,20 @@ const ManageAccountsView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      // const data = await getAPIService(APIConstants.GET_USERS, {
-      //   ...paginationOptions,
-      //   // searchAccount: searchAccount,
-      //   filter: filterData,
-      //   sortFields: sortFields
-      // })
-      setAvailableUsers(availableUsersData)
+      const data = await getAPIService(APIConstants.GET_ALL_USERS, {}, 'get')
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.error
+        })
+      } else {
+        setAvailableUsers({
+          totalUsers: data.length,
+          totalPages: 1,
+          usersData: data
+        })
+      }
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -118,27 +123,27 @@ const ManageAccountsView = () => {
     getUsers()
   }, [filterData])
 
-  // useEffect(() => {
-  //   if (!modalsState.editUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.editUser])
+  useEffect(() => {
+    if (!modalsState.editUser) {
+      getUsers()
+    }
+  }, [modalsState.editUser])
 
-  // useEffect(() => {
-  //   if (!modalsState.deleteUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.deleteUser])
+  useEffect(() => {
+    if (!modalsState.deleteUser) {
+      getUsers()
+    }
+  }, [modalsState.deleteUser])
 
-  // useEffect(() => {
-  //   if (!modalsState.createUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.createUser])
+  useEffect(() => {
+    if (!modalsState.createUser) {
+      getUsers()
+    }
+  }, [modalsState.createUser])
 
   const [sortColumns, setSortColumns] = useState([
     {
-      id: 'firstName',
+      id: 'fname',
       desc: false
     }
   ])
@@ -154,7 +159,7 @@ const ManageAccountsView = () => {
     } else {
       setSortColumns([
         {
-          id: 'firstName',
+          id: 'fname',
           desc: false
         }
       ])
@@ -230,42 +235,29 @@ const ManageAccountsView = () => {
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  let data = availableUsersData
-                  data.usersData = data.usersData.filter(
-                    (item) => item.id !== rowData.original.id
+                  getAPIService(
+                    APIConstants.DELETE_USER + '/' + rowData.original._id,
+                    {},
+                    'DELETE'
                   )
-                  setModalsState({
-                    ...modalsState,
-                    deleteUser: false
-                  })
-                  Swal.fire(
-                    'User Deleted!',
-                    'User has been deleted.',
-                    'success'
-                  )
-                  setAvailableUsers(data)
-                  // getAPIService(APIConstants.DELETE_USER, {
-                  //   editUserId: rowData.original._id,
-                  //   email: rowData.original.email
-                  // })
-                  //   .then(() => {
-                  //     setModalsState({
-                  //       ...modalsState,
-                  //       deleteUser: false
-                  //     })
-                  //     Swal.fire(
-                  //       'User Deleted!',
-                  //       'User has been deleted.',
-                  //       'success'
-                  //     )
-                  //   })
-                  //   .catch((err) => {
-                  //     Swal.fire({
-                  //       icon: 'error',
-                  //       title: 'Oops...',
-                  //       text: err
-                  //     })
-                  //   })
+                    .then(() => {
+                      setModalsState({
+                        ...modalsState,
+                        deleteUser: false
+                      })
+                      Swal.fire(
+                        'User Deleted!',
+                        'User has been deleted.',
+                        'success'
+                      )
+                    })
+                    .catch((err) => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err
+                      })
+                    })
                 }
               })
             }}
@@ -303,54 +295,41 @@ const ManageAccountsView = () => {
             }}
             onPrimaryClick={(updatedData) => {
               setLoading('UpdatingUser')
-              setModalsState({
-                ...modalsState,
-                editUser: false
-              })
-              let data = availableUsers
-              for (let i = 0; i < data.usersData.length; i++) {
-                if (data.usersData[i].id === updatedData.id) {
-                  data.usersData[i] = updatedData
-                }
-              }
-              setAvailableUsers(data)
 
-              Swal.fire({
-                icon: 'success',
-                text: 'User Updated',
-                showConfirmButton: false,
-                timer: 1500
-              })
-              setLoading('')
-              // getAPIService(
-              //   APIConstants.UPDATE_USER,
-              //   {
-              //     editUserId: updatedData._id,
-              //     userData: { ...updatedData }
-              //   },
-              //   'PUT'
-              // )
-              //   .then(() => {
-              //     setModalsState({
-              //       ...modalsState,
-              //       editUser: false
-              //     })
-              //     Swal.fire({
-              //       icon: 'success',
-              //       text: 'User Updated',
-              //       showConfirmButton: false,
-              //       timer: 1500
-              //     })
-              //     setLoading('')
-              //   })
-              //   .catch((err) => {
-              //     Swal.fire({
-              //       icon: 'error',
-              //       title: 'Oops...',
-              //       text: err
-              //     })
-              //     setLoading('')
-              //   })
+              getAPIService(
+                APIConstants.UPDATE_USER + '/' + updatedData._id,
+                {
+                  fname: updatedData.fname,
+                  lname: updatedData.lname,
+                  email: updatedData.email
+                },
+                'PUT'
+              )
+                .then(() => {
+                  setModalsState({
+                    ...modalsState,
+                    editUser: false
+                  })
+                  Swal.fire({
+                    icon: 'success',
+                    text: 'User Updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  setLoading('')
+                })
+                .catch((err) => {
+                  setModalsState({
+                    ...modalsState,
+                    editUser: false
+                  })
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err
+                  })
+                  setLoading('')
+                })
             }}
             isLoading={loading === 'UpdatingUser'}
             primaryActionName={'Update User'}
@@ -410,37 +389,31 @@ const ManageAccountsView = () => {
                   }
                 })
               } else {
-                setLoading('ChangingPassword')
                 getAPIService(
-                  APIConstants.CHANGE_USER_PASSWORD,
+                  APIConstants.UPDATE_USER + '/' + currentlyEditingUser._id,
                   {
-                    editUserId: newPasswordData._id,
-                    newPassword: newPasswordData.newPassword,
-                    confirmPassword: newPasswordData.confirmPassword
+                    password: newPassword
                   },
-                  'PATCH'
+                  'PUT'
                 )
                   .then(() => {
                     setModalsState({
                       ...modalsState,
                       changeUserPassword: false
                     })
-                    setErrors((prevState) => {
-                      return {
-                        ...prevState,
-                        newPassword: false,
-                        confirmPassword: false
-                      }
-                    })
                     Swal.fire({
                       icon: 'success',
-                      text: 'Password Changed',
+                      text: 'User Updated',
                       showConfirmButton: false,
                       timer: 1500
                     })
                     setLoading('')
                   })
                   .catch((err) => {
+                    setModalsState({
+                      ...modalsState,
+                      changeUserPassword: false
+                    })
                     Swal.fire({
                       icon: 'error',
                       title: 'Oops...',
@@ -476,48 +449,33 @@ const ManageAccountsView = () => {
         primaryActionName={'Create'}
         secondaryActionName={'Close'}
         onPrimaryClick={(newUserData) => {
-          newUserData.id = Math.random()
           setLoading('CreatingUser')
-          let data = availableUsers
-          data.usersData.push(newUserData)
-          setAvailableUsers(data)
-          setUserData(initialUserState)
-          Swal.fire({
-            icon: 'success',
-            text: 'User Created',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          setLoading('')
-          setModalsState({
-            ...modalsState,
-            createUser: false
-          })
-          // getAPIService(APIConstants.REGISTER, newUserData)
-          //   .then(() => {
-          //     setUserData(initialUserState)
-          //     Swal.fire({
-          //       icon: 'success',
-          //       text: 'User Created',
-          //       showConfirmButton: false,
-          //       timer: 1500
-          //     })
-          //     setLoading('')
-          //   })
-          //   .catch((err) => {
-          //     Swal.fire({
-          //       icon: 'error',
-          //       title: 'Oops...',
-          //       text: err
-          //     })
-          //     setLoading('')
-          //   })
-          //   .finally(() => {
-          //     setModalsState({
-          //       ...modalsState,
-          //       createUser: false
-          //     })
-          //   })
+
+          getAPIService(APIConstants.CREATE_USER, newUserData)
+            .then(() => {
+              setUserData(initialUserState)
+              Swal.fire({
+                icon: 'success',
+                text: 'User Created',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading('')
+            })
+            .catch((err) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: err
+              })
+              setLoading('')
+            })
+            .finally(() => {
+              setModalsState({
+                ...modalsState,
+                createUser: false
+              })
+            })
         }}
         isLoading={loading === 'CreatingUser'}
         onSecondaryClick={() => {

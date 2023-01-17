@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
       const data = await authServices.login(email, password)
       localStorage.setItem('token', data.token)
       localStorage.setItem('neon-user', JSON.stringify(data.user))
-      axiosInstance.defaults.headers.common['Authorization'] = data.token
+      axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
       setProfile(data.user)
       userHasAuthenticated(true)
       setIsAuthenticating(false)
@@ -34,10 +34,8 @@ const AuthProvider = ({ children }) => {
   const register = async (data) => {
     if (
       data.email === '' ||
-      data.firstName === '' ||
-      data.lastName === '' ||
-      data.phone === '' ||
-      data.location === '' ||
+      data.fname === '' ||
+      data.lname === '' ||
       data.password === '' ||
       data.confirmPassword === ''
     ) {
@@ -87,7 +85,7 @@ const AuthProvider = ({ children }) => {
       const res = await authServices.register(data)
       localStorage.setItem('token', res.token)
       localStorage.setItem('neon-user', JSON.stringify(res.user))
-      axiosInstance.defaults.headers.common['Authorization'] = res.token
+      axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
       setProfile(res.user)
       userHasAuthenticated(true)
       setIsAuthenticating(false)

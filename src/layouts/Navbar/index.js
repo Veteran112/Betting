@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
-  Alert,
   AppBar,
   Box,
   Toolbar,
@@ -19,9 +18,6 @@ import { useNavigate, useLocation } from 'react-router'
 import { toneWhite } from 'config/Color'
 import { useAuth } from 'contexts'
 import ExtendedMenu from './extended-menu'
-import { getAPIService } from 'services/apiServices'
-import CONSTANTS from 'services/CONSTANTS'
-import alert from 'utils/alert'
 
 const pages = [
   { name: 'Home', path: '/' },
@@ -73,49 +69,8 @@ const Navbar = () => {
     setAnchorElNav(null)
   }
 
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null)
-  // }
-
-  const resendVerifyEmail = async () => {
-    try {
-      await getAPIService(CONSTANTS.RESEND_VERIFY_EMAIL, {
-        email: auth.profile.email
-      })
-      alert(true, 'Successfully sent email')
-    } catch (error) {
-      alert(false, 'Failed to send email')
-    }
-  }
-
   return (
     <AppBar position="static" color="inherit">
-      {auth.isAuthenticated && !auth.profile.emailVerified && (
-        <Alert
-          variant="filled"
-          severity="warning"
-          sx={{
-            justifyContent: 'center'
-          }}
-        >
-          <span>
-            Email verification required! Please click the link on the email we
-            sent you to your mail box
-          </span>{' '}
-          <Typography
-            component="span"
-            sx={{
-              border: '1px solid white',
-              borderRadius: '5px',
-              padding: '5px',
-              cursor: 'pointer'
-            }}
-            onClick={resendVerifyEmail}
-          >
-            Resend Email
-          </Typography>
-        </Alert>
-      )}
       <Container maxWidth="xl">
         <Toolbar disableGutters className={styles.toolbar}>
           <Typography

@@ -16,9 +16,8 @@ const getAPIService = (url, data = {}, method = 'post') => {
           authServices.logout(true)
           resolve('logout')
         }
-        if (res.data.status === 'Success') {
-          localStorage.setItem('token', res.headers.token)
-          resolve(res.data.data)
+        if (res.status === 200) {
+          resolve(res.data)
         } else reject(res.data.message)
       })
       .catch((err) => {

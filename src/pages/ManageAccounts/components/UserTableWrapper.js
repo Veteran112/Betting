@@ -8,11 +8,11 @@ const UserTableWrapper = (props) => {
     () => [
       {
         Header: 'First Name',
-        accessor: 'firstName'
+        accessor: 'fname'
       },
       {
         Header: 'Last Name',
-        accessor: 'lastName'
+        accessor: 'lname'
       },
       {
         Header: 'Email',

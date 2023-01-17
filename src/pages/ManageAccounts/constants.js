@@ -17,27 +17,7 @@ const accountTypeData = [
   }
 ]
 
-// const experiencesData = [
-//   { value: '1', label: '1 year' },
-//   { value: '2', label: '2 years' },
-//   { value: '3', label: '3 years' },
-//   { value: '4', label: '4 years' },
-//   { value: '5', label: '5 years' },
-//   { value: '6', label: 'Over 5 years' }
-// ]
-const availabilitiesData = [
-  { value: '0', label: 'Available' },
-  { value: '1', label: 'Unavailable' },
-  { value: '2', label: 'Scheduled' }
-]
-
 const newUserFields = {
-  // userType: {
-  //   // kind: 'Select',
-  //   id: 'userAccountType',
-  //   label: 'Account Type'
-  //   // data: accountTypeData
-  // },
   email: {
     kind: 'TextField',
     id: 'userEmailAddress',
@@ -47,78 +27,24 @@ const newUserFields = {
       required: 'is Required'
     }
   },
-  firstName: {
+  fname: {
     kind: 'TextField',
-    id: 'userFirstName',
+    id: 'userfname',
     label: 'First Name',
     data: '',
     helperTexts: {
       required: 'is Required'
     }
   },
-  lastName: {
+  lname: {
     kind: 'TextField',
-    id: 'userLastName',
+    id: 'userlname',
     label: 'Last Name',
     data: '',
     helperTexts: {
       required: 'is Required'
     }
   },
-  // language: {
-  //   kind: 'TextField',
-  //   id: 'language',
-  //   label: 'Language',
-  //   data: '',
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  // phone: {
-  //   kind: 'phone',
-  //   id: 'phone',
-  //   label: 'Phone',
-  //   data: '',
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  // location: {
-  //   kind: 'Select',
-  //   id: 'location',
-  //   label: 'Location',
-  //   data: [],
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  // experience: {
-  //   kind: 'Select',
-  //   id: 'location',
-  //   label: 'Experience',
-  //   data: experiencesData,
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  // availability: {
-  //   kind: 'Select',
-  //   id: 'availability',
-  //   label: 'Availability',
-  //   data: availabilitiesData,
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  // company: {
-  //   kind: 'TextField',
-  //   id: 'company',
-  //   label: 'Company',
-  //   data: '',
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
   password: {
     kind: 'TextField',
     id: 'userPassword',
@@ -151,47 +77,20 @@ const filterFields = {
       required: 'is Required'
     }
   },
-  firstName: {
+  fname: {
     kind: 'TextField',
-    id: 'userFirstName',
+    id: 'userfname',
     label: 'First Name',
     data: '',
     helperTexts: {
       required: 'is Required'
     }
   },
-  lastName: {
+  lname: {
     kind: 'TextField',
-    id: 'userLastName',
+    id: 'userlname',
     label: 'Last Name',
     data: '',
-    helperTexts: {
-      required: 'is Required'
-    }
-  },
-  language: {
-    kind: 'TextField',
-    id: 'language',
-    label: 'Language',
-    data: '',
-    helperTexts: {
-      required: 'is Required'
-    }
-  },
-  // phone: {
-  //   kind: 'phone',
-  //   id: 'phone',
-  //   label: 'Phone',
-  //   data: '',
-  //   helperTexts: {
-  //     required: 'is Required'
-  //   }
-  // },
-  availability: {
-    kind: 'Select',
-    id: 'availability',
-    label: 'Availability',
-    data: [{ label: 'All', value: 'all' }, ...availabilitiesData],
     helperTexts: {
       required: 'is Required'
     }

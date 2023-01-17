@@ -1,35 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField'
-// import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
-// import MenuItem from '@mui/material/MenuItem'
-// import Radio from '@mui/material/Radio'
-// import RadioGroup from '@mui/material/RadioGroup'
-// import FormControlLabel from '@mui/material/FormControlLabel'
-// import FormControl from '@mui/material/FormControl'
 import { Link } from 'react-router-dom'
 import { PrimaryLoadingButton } from 'components/StyledButton'
 import { useAuth } from 'contexts'
 import { useNavigate } from 'react-router'
-// import countryList from 'react-select-country-list'
-// import ReactPhoneInput from 'react-phone-input-mui'
-// import { Input } from '@mui/material'
 
 const RegisterView = () => {
   const [data, setData] = useState({
     email: '',
-    firstName: '',
-    lastName: '',
-    // company: '',
-    // experience: '',
-    // phone: '',
-    // userType: 'interpreter',
-    // language: '',
-    // location: '',
+    fname: '',
+    lname: '',
     password: '',
     confirmPassword: ''
   })
-  // const countrys = useMemo(() => countryList().getData(), [])
 
   const auth = useAuth()
   const history = useNavigate()
@@ -64,19 +48,15 @@ const RegisterView = () => {
                   label="First Name"
                   variant="standard"
                   className="w-100 mb-4"
-                  value={data.firstName}
-                  onChange={(e) =>
-                    setData({ ...data, firstName: e.target.value })
-                  }
+                  value={data.fname}
+                  onChange={(e) => setData({ ...data, fname: e.target.value })}
                 />
                 <TextField
                   label="Last Name"
                   variant="standard"
                   className="w-100 mb-4"
-                  value={data.lastName}
-                  onChange={(e) =>
-                    setData({ ...data, lastName: e.target.value })
-                  }
+                  value={data.lname}
+                  onChange={(e) => setData({ ...data, lname: e.target.value })}
                 />
                 <TextField
                   label="Email"

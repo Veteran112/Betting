@@ -22,10 +22,10 @@ const ExtendedMenu = () => {
           <ul>
             <li
               onClick={() => {
-                navigate('/profile')
+                navigate('/betting_provider')
               }}
             >
-              Profile
+              Provider
             </li>
           </ul>
 

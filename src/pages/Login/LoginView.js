@@ -13,8 +13,8 @@ const LoginView = () => {
   const history = useNavigate()
 
   const login = async () => {
-    const res = await auth.login(email, password.toLocaleLowerCase())
-    if (!res) {
+    const res = await auth.login(email, password)
+    if (res) {
       history('/betting_provider')
     }
   }

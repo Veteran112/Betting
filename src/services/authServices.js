@@ -29,15 +29,17 @@ class AuthService {
         .post(APIConstants.LOGIN, { email, password })
         .then((response) => {
           const resData = response.data
-          if (resData.status == 'Success') {
+          if (resData.token) {
             resolve({
-              token: response.headers.token,
-              user: resData.data.user
+              token: resData.token,
+              user: {
+                userType: 'admin'
+              }
             })
           } else {
             reject({
               errorType: response.data.errorType,
-              errorMsg: response.data.message
+              errorMsg: response.data.error
             })
           }
         })
@@ -57,15 +59,17 @@ class AuthService {
         .post(APIConstants.REGISTER, { ...data })
         .then((response) => {
           const resData = response.data
-          if (resData.status == 'Success') {
+          if (resData.token) {
             resolve({
-              token: response.headers.token,
-              user: resData.data.user
+              token: resData.token,
+              user: {
+                userType: 'admin'
+              }
             })
           } else {
             reject({
               errorType: response.data.errorType,
-              errorMsg: response.data.message
+              errorMsg: response.data.error
             })
           }
         })

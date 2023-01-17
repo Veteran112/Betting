@@ -99,7 +99,7 @@ const BettingProviderView = () => {
 
   const [sortColumns, setSortColumns] = useState([
     {
-      id: 'firstName',
+      id: 'fname',
       desc: false
     }
   ])

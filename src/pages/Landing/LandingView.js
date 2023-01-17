@@ -82,10 +82,10 @@ const LandingView = () => {
                       cursor: 'pointer',
                       marginRight: '20px'
                     }}
-                    href="/profile"
+                    href="/betting_provider"
                   >
                     {' '}
-                    Profile{' '}
+                    Provider{' '}
                   </Link>
                   {auth.profile.userType === 'admin' && (
                     <Link

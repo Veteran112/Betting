@@ -2,8 +2,8 @@ import { UPDATE_USER } from '../actions/userActions'
 
 const initialState = {
   uid: '',
-  firstName: '',
-  lastName: '',
+  fname: '',
+  lname: '',
   email: '',
   phone: ''
 }
