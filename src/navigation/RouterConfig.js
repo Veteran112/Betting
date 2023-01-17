@@ -10,7 +10,6 @@ import { Navbar } from 'layouts'
 const Landing = React.lazy(() => import('pages/Landing'))
 const Login = React.lazy(() => import('pages/Login'))
 const Register = React.lazy(() => import('pages/Register'))
-const Profile = React.lazy(() => import('pages/Profile'))
 const BettingProvider = React.lazy(() => import('pages/BettingProvider'))
 const Provider = React.lazy(() => import('pages/Provider'))
 const Interpreters = React.lazy(() => import('pages/WorkTime'))
@@ -36,18 +35,6 @@ export const RouterConfig = () => {
           <Route exact path="/" element={<Landing />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
-          <Route
-            exact
-            path="/profile"
-            element={
-              // <PrivateRoute>
-              <div className="profile_box">
-                <Navbar />
-                <Profile />
-              </div>
-              // </PrivateRoute>
-            }
-          />
           <Route
             exact
             path="/betting_provider"
