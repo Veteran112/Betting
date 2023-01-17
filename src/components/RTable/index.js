@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   useTable,
   useGlobalFilter,
@@ -9,19 +9,18 @@ import './index.scss'
 import PropTypes from 'prop-types'
 import { PrimaryButton } from '../StyledButton'
 import SelectBox1 from '../SelectBox1'
-// import { Button, Modal, TextField, Typography, Box } from '@mui/material'
-import { Modal, Typography, Box } from '@mui/material'
 
 const RTable = (props) => {
   const {
     columns,
     data: tableData,
-    sortColumns,
+    sortColumns = [],
     defaultPageSize = 10,
     style = { minHeight: 400, width: '100%' },
     manualSortBy = false,
     columnHeaderClick,
-    selectedSorts = {}
+    selectedSorts = {},
+    paginationBool = true
   } = props
 
   const data = React.useMemo(() => [...tableData], [tableData, props])
@@ -59,22 +58,12 @@ const RTable = (props) => {
     setPageSize,
     state: { pageIndex, pageSize, globalFilter }
   } = tableInstance
-  const [test, setTest] = useState(false)
   useEffect(() => {
     setGlobalFilter(props.setGlobalFilterValue)
   }, [props.setGlobalFilterValue])
 
   useEffect(() => {}, [globalFilter])
-  const styles = {
-    position: 'absolute',
-    right: 75,
-    height: '440px',
-    top: '32%',
-    width: '65%',
-    bgcolor: 'white',
-    border: '2px solid rgb(151, 31, 136)',
-    textAlign: 'center'
-  }
+
   return (
     <div style={style} className="d-flex flex-column gap-1">
       <table {...getTableProps()} className="r-table r-table-full table-hover">
@@ -166,68 +155,54 @@ const RTable = (props) => {
         </Button>
       </div> */}
 
-      <div className="pagination-container mt-4">
-        <div className="pagination">
-          <PrimaryButton
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
-          >
-            {'<<'}
-          </PrimaryButton>{' '}
-          <PrimaryButton
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            {'<'}
-          </PrimaryButton>{' '}
-          <PrimaryButton onClick={() => nextPage()} disabled={!canNextPage}>
-            {'>'}
-          </PrimaryButton>{' '}
-          <PrimaryButton
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {'>>'}
-          </PrimaryButton>{' '}
-          <span>
-            Page{' '}
-            <strong>
-              {pageIndex + 1} of {pageOptions.length}
-            </strong>{' '}
-          </span>
-          <SelectBox1
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value))
-            }}
-            className="mt-0"
-            options={[
-              { label: 'Show 5', value: 5 },
-              { label: 'Show 10', value: 10 },
-              { label: 'Show 20', value: 20 },
-              { label: 'Show 30', value: 30 },
-              { label: 'Show 40', value: 40 },
-              { label: 'Show 50', value: 50 }
-            ]}
-          />
+      {paginationBool && (
+        <div className="pagination-container mt-4">
+          <div className="pagination">
+            <PrimaryButton
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
+              {'<<'}
+            </PrimaryButton>{' '}
+            <PrimaryButton
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              {'<'}
+            </PrimaryButton>{' '}
+            <PrimaryButton onClick={() => nextPage()} disabled={!canNextPage}>
+              {'>'}
+            </PrimaryButton>{' '}
+            <PrimaryButton
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {'>>'}
+            </PrimaryButton>{' '}
+            <span>
+              Page{' '}
+              <strong>
+                {pageIndex + 1} of {pageOptions.length}
+              </strong>{' '}
+            </span>
+            <SelectBox1
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value))
+              }}
+              className="mt-0"
+              options={[
+                { label: 'Show 5', value: 5 },
+                { label: 'Show 10', value: 10 },
+                { label: 'Show 20', value: 20 },
+                { label: 'Show 30', value: 30 },
+                { label: 'Show 40', value: 40 },
+                { label: 'Show 50', value: 50 }
+              ]}
+            />
+          </div>
         </div>
-      </div>
-
-      <Modal open={test} onClose={() => setTest(false)}>
-        <Box sx={styles}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            sx={{ mt: 20 }}
-          >
-            RUN TEST
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {'<EMBEDDED SCREEN OF PROVIDER>'}
-          </Typography>
-        </Box>
-      </Modal>
+      )}
     </div>
   )
 }
@@ -247,7 +222,8 @@ RTable.propTypes = {
   columnHeaderClick: PropTypes.func,
   getTrProps: PropTypes.func,
   selectedSorts: PropTypes.object,
-  row: PropTypes.any
+  row: PropTypes.any,
+  paginationBool: PropTypes.bool
 }
 
 export default RTable

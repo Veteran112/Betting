@@ -17,6 +17,8 @@ const Interpreters = React.lazy(() => import('pages/WorkTime'))
 const ManageAccounts = React.lazy(() => import('pages/ManageAccounts'))
 const ForgotPasswordContainer = React.lazy(() => import('pages/ForgotPassword'))
 const ResetPasswordContainer = React.lazy(() => import('pages/ResetPassword'))
+const Dashboard = React.lazy(() => import('pages/Dashboard'))
+const Bet = React.lazy(() => import('pages/Bet'))
 
 export const RouterConfig = () => {
   return (
@@ -102,6 +104,30 @@ export const RouterConfig = () => {
             exact
             path="/reset_password/:resetPasswordToken"
             element={<ResetPasswordContainer />}
+          />
+          <Route
+            exact
+            path="/dashboard"
+            element={
+              // <PrivateRoute>
+              <div>
+                <Navbar />
+                <Dashboard />
+              </div>
+              // </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/bet"
+            element={
+              // <PrivateRoute>
+              <div>
+                <Navbar />
+                <Bet />
+              </div>
+              // </PrivateRoute>
+            }
           />
           <Route path="*" element={<Navigate to={'/'} />} />
         </Routes>
