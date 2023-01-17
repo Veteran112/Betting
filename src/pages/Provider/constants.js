@@ -1,4 +1,13 @@
 const newFields = {
+  step: {
+    kind: 'TextField',
+    id: 'step',
+    label: 'STEP',
+    data: '',
+    helperTexts: {
+      required: 'is Required'
+    }
+  },
   command: {
     kind: 'TextField',
     id: 'command',

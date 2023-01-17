@@ -49,7 +49,7 @@ export const RouterConfig = () => {
           />
           <Route
             exact
-            path="/provider"
+            path="/betting_provider/:id/:name"
             element={
               <PrivateRoute>
                 <>

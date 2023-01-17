@@ -10,15 +10,8 @@ const UserTableWrapper = (props) => {
     () => [
       {
         Header: 'STEP',
-        accessor: 'id',
-        disableSortBy: true,
-        Cell: ({ row }) => {
-          return (
-            <>
-              <span>{parseInt(row.id) + 1}</span>
-            </>
-          )
-        }
+        accessor: 'step',
+        disableSortBy: true
       },
       {
         Header: 'Command',
@@ -48,7 +41,7 @@ const UserTableWrapper = (props) => {
   const sortColumns = React.useMemo(() => {
     return [
       {
-        id: 'id',
+        id: 'step',
         desc: false
       }
     ]

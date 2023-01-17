@@ -33,6 +33,7 @@ class AuthService {
             resolve({
               token: resData.token,
               user: {
+                ...resData.user,
                 userType: 'admin'
               }
             })
@@ -63,6 +64,7 @@ class AuthService {
             resolve({
               token: resData.token,
               user: {
+                ...resData.user,
                 userType: 'admin'
               }
             })

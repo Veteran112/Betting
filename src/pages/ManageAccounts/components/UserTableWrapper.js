@@ -37,13 +37,16 @@ const UserTableWrapper = (props) => {
       },
       {
         Header: 'Status',
-        accessor: 'status',
         disableSortBy: true,
         Cell: ({ row }) => {
           return (
             <>
-              {row.original.status}
-              <Button className="_btn ml-2">BLOCK</Button>
+              <Button
+                className="_btn ml-2"
+                onClick={() => props.onBlock(row, !row.original.block)}
+              >
+                {!row.original.block ? 'Block' : 'Unblock'}
+              </Button>
             </>
           )
         }
@@ -54,9 +57,9 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              <Button className="_btn" onClick={() => props.onEdit(row)}>
+              {/* <Button className="_btn" onClick={() => props.onEdit(row)}>
                 EDIT USER
-              </Button>
+              </Button> */}
               <Button className="_btn ml-2" onClick={() => props.onDelete(row)}>
                 DELETE USER
               </Button>
@@ -89,6 +92,7 @@ const UserTableWrapper = (props) => {
 UserTableWrapper.propTypes = {
   data: PropTypes.any,
   onEdit: PropTypes.func.isRequired,
+  onBlock: PropTypes.func.isRequired,
   onPasswordUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onPaginationChange: PropTypes.func,

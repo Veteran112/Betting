@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Chip, CircularProgress, Typography } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
 import { newFields } from './constants'
-// import { getAPIService } from 'services/apiServices'
-// import APIConstants from 'services/CONSTANTS'
+import { getAPIService } from 'services/apiServices'
+import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import UserModal from './components/UserModal'
 import UserTableWrapper from './components/UserTableWrapper'
-
-import { providersData } from 'data'
+import { useParams } from 'react-router-dom'
 
 const ProviderView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
+  const params = useParams()
 
   const initialUserState = () => {
     return Object.keys(newFields).reduce((allFields, field) => {
@@ -32,7 +32,7 @@ const ProviderView = () => {
   const [errors, setErrors] = useState(initialErrorState)
 
   const [availableUsers, setAvailableUsers] = useState({
-    totalUsers: 0,
+    total: 0,
     totalPages: 1,
     data: []
   })
@@ -52,13 +52,24 @@ const ProviderView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      // const data = await getAPIService(APIConstants.GET_USERS, {
-      //   ...paginationOptions,
-      //   // searchAccount: searchAccount,
-      //   filter: filterData,
-      //   sortFields: sortFields
-      // })
-      setAvailableUsers(providersData)
+      const data = await getAPIService(
+        APIConstants.COMMANDS + '/' + params.id,
+        {},
+        'GET'
+      )
+      if (data.commands) {
+        setAvailableUsers({
+          total: data.commands.length,
+          totalPages: 1,
+          data: data.commands
+        })
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.error
+        })
+      }
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -76,26 +87,19 @@ const ProviderView = () => {
   }, [])
 
   useEffect(() => {
-    getUsers()
-  }, [paginationOptions, sortFields])
-
-  // useEffect(() => {
-  //   if (!modalsState.editUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.editUser])
-
-  // useEffect(() => {
-  //   if (!modalsState.deleteUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.deleteUser])
-
-  // useEffect(() => {
-  //   if (!modalsState.createUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.createUser])
+    if (
+      !modalsState.createUser &&
+      !modalsState.editUser &&
+      !modalsState.changeUserPassword &&
+      !modalsState.deleteUser
+    ) {
+      getUsers()
+    }
+  }, [
+    JSON.stringify(paginationOptions),
+    JSON.stringify(sortFields),
+    JSON.stringify(modalsState)
+  ])
 
   return (
     <div className="manage-accounts-container">
@@ -103,7 +107,7 @@ const ProviderView = () => {
         <div className="d-flex mt-2 mb-4 justify-content-between">
           <div>
             <Typography variant="h5" component="h5" className="onyx main-font">
-              Bettng Providers Bet123{' '}
+              Bettng Providers {params.name}{' '}
               <Chip label={`${availableUsers.total}`} color="primary" />
             </Typography>
             {isLoading && (
@@ -159,42 +163,29 @@ const ProviderView = () => {
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  let data = providersData
-                  data.data = data.data.filter(
-                    (item) => item.id !== rowData.original.id
+                  getAPIService(
+                    APIConstants.COMMANDS + '/' + rowData.original._id,
+                    {},
+                    'DELETE'
                   )
-                  setModalsState({
-                    ...modalsState,
-                    deleteUser: false
-                  })
-                  Swal.fire(
-                    'Command Deleted!',
-                    'Command has been deleted.',
-                    'success'
-                  )
-                  setAvailableUsers(data)
-                  // getAPIService(APIConstants.DELETE_USER, {
-                  //   editUserId: rowData.original._id,
-                  //   email: rowData.original.email
-                  // })
-                  //   .then(() => {
-                  //     setModalsState({
-                  //       ...modalsState,
-                  //       deleteUser: false
-                  //     })
-                  //     Swal.fire(
-                  //       'User Deleted!',
-                  //       'User has been deleted.',
-                  //       'success'
-                  //     )
-                  //   })
-                  //   .catch((err) => {
-                  //     Swal.fire({
-                  //       icon: 'error',
-                  //       title: 'Oops...',
-                  //       text: err
-                  //     })
-                  //   })
+                    .then(() => {
+                      setModalsState({
+                        ...modalsState,
+                        deleteUser: false
+                      })
+                      Swal.fire(
+                        'User Deleted!',
+                        'User has been deleted.',
+                        'success'
+                      )
+                    })
+                    .catch((err) => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err
+                      })
+                    })
                 }
               })
             }}
@@ -231,54 +222,36 @@ const ProviderView = () => {
             }}
             onPrimaryClick={(updatedData) => {
               setLoading('UpdatingUser')
-              setModalsState({
-                ...modalsState,
-                editUser: false
-              })
-              let data = availableUsers
-              for (let i = 0; i < data.data.length; i++) {
-                if (data.data[i].id === updatedData.id) {
-                  data.data[i] = updatedData
-                }
-              }
-              setAvailableUsers(data)
 
-              Swal.fire({
-                icon: 'success',
-                text: 'Updated',
-                showConfirmButton: false,
-                timer: 1500
-              })
-              setLoading('')
-              // getAPIService(
-              //   APIConstants.UPDATE_USER,
-              //   {
-              //     editUserId: updatedData._id,
-              //     userData: { ...updatedData }
-              //   },
-              //   'PUT'
-              // )
-              //   .then(() => {
-              //     setModalsState({
-              //       ...modalsState,
-              //       editUser: false
-              //     })
-              //     Swal.fire({
-              //       icon: 'success',
-              //       text: 'User Updated',
-              //       showConfirmButton: false,
-              //       timer: 1500
-              //     })
-              //     setLoading('')
-              //   })
-              //   .catch((err) => {
-              //     Swal.fire({
-              //       icon: 'error',
-              //       title: 'Oops...',
-              //       text: err
-              //     })
-              //     setLoading('')
-              //   })
+              getAPIService(
+                APIConstants.COMMANDS + '/' + updatedData._id,
+                {
+                  step: updatedData.step,
+                  command: updatedData.command
+                },
+                'PUT'
+              )
+                .then(() => {
+                  setModalsState({
+                    ...modalsState,
+                    editUser: false
+                  })
+                  Swal.fire({
+                    icon: 'success',
+                    text: 'User Updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  setLoading('')
+                })
+                .catch((err) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err
+                  })
+                  setLoading('')
+                })
             }}
             isLoading={loading === 'UpdatingUser'}
             primaryActionName={'Update'}
@@ -303,48 +276,36 @@ const ProviderView = () => {
         primaryActionName={'Create'}
         secondaryActionName={'Close'}
         onPrimaryClick={(newUserData) => {
-          newUserData.id = Math.random()
           setLoading('CreatingUser')
-          let data = availableUsers
-          data.data.push(newUserData)
-          setAvailableUsers(data)
-          setUserData(initialUserState)
-          Swal.fire({
-            icon: 'success',
-            text: 'User Created',
-            showConfirmButton: false,
-            timer: 1500
+
+          getAPIService(APIConstants.COMMANDS + '/create', {
+            ...newUserData,
+            provider_id: params.id
           })
-          setLoading('')
-          setModalsState({
-            ...modalsState,
-            createUser: false
-          })
-          // getAPIService(APIConstants.REGISTER, newUserData)
-          //   .then(() => {
-          //     setUserData(initialUserState)
-          //     Swal.fire({
-          //       icon: 'success',
-          //       text: 'User Created',
-          //       showConfirmButton: false,
-          //       timer: 1500
-          //     })
-          //     setLoading('')
-          //   })
-          //   .catch((err) => {
-          //     Swal.fire({
-          //       icon: 'error',
-          //       title: 'Oops...',
-          //       text: err
-          //     })
-          //     setLoading('')
-          //   })
-          //   .finally(() => {
-          //     setModalsState({
-          //       ...modalsState,
-          //       createUser: false
-          //     })
-          //   })
+            .then(() => {
+              setUserData(initialUserState)
+              Swal.fire({
+                icon: 'success',
+                text: 'User Created',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading('')
+            })
+            .catch((err) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: err
+              })
+              setLoading('')
+            })
+            .finally(() => {
+              setModalsState({
+                ...modalsState,
+                createUser: false
+              })
+            })
         }}
         isLoading={loading === 'CreatingUser'}
         onSecondaryClick={() => {

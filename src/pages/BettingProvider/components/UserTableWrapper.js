@@ -2,8 +2,11 @@ import React from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
 import { Button } from '@mui/material'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { useNavigate } from 'react-router-dom'
 
 const UserTableWrapper = (props) => {
+  const history = useNavigate()
   const columns = React.useMemo(
     () => [
       {
@@ -27,6 +30,18 @@ const UserTableWrapper = (props) => {
               <Button className="_btn ml-2" onClick={() => props.onDelete(row)}>
                 DELETE
               </Button>
+
+              <ArrowForwardIcon
+                className="float-right mt-3 cursor-pointer"
+                onClick={() =>
+                  history(
+                    '/betting_provider/' +
+                      row.original._id +
+                      '/' +
+                      row.original.name
+                  )
+                }
+              />
             </>
           )
         }

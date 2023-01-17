@@ -10,9 +10,12 @@ const GET_USERS = `${BASE_URL}/users/get`
 const CREATE_USER = `${BASE_URL}/users/create`
 const UPDATE_USER = `${BASE_URL}/users`
 const DELETE_USER = `${BASE_URL}/users`
+const BLOCK_USER = `${BASE_URL}/users/block`
 const CHANGE_USER_PASSWORD = `${BASE_URL}/users/change_password`
 const FORGOT_PASSWORD = `${BASE_URL}/auth/forgot_password`
 const RESET_PASSWORD = `${BASE_URL}/auth/recover_password`
+const PROVIDERS = `${BASE_URL}/providers`
+const COMMANDS = `${BASE_URL}/commands`
 
 export default {
   GET_ALL_USERS,
@@ -22,7 +25,10 @@ export default {
   GET_USERS,
   UPDATE_USER,
   DELETE_USER,
+  BLOCK_USER,
   CHANGE_USER_PASSWORD,
   FORGOT_PASSWORD,
-  RESET_PASSWORD
+  RESET_PASSWORD,
+  PROVIDERS,
+  COMMANDS
 }

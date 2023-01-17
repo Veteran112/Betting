@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Chip, CircularProgress, Typography } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
 import { newFields } from './constants'
-// import { getAPIService } from 'services/apiServices'
-// import APIConstants from 'services/CONSTANTS'
+import { getAPIService } from 'services/apiServices'
+import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import UserModal from './components/UserModal'
 import UserTableWrapper from './components/UserTableWrapper'
-
-import { bettingProvidersData } from 'data'
+import { useAuth } from 'contexts'
 
 const BettingProviderView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
+  const auth = useAuth()
 
   const initialUserState = () => {
     return Object.keys(newFields).reduce((allFields, field) => {
@@ -32,7 +32,7 @@ const BettingProviderView = () => {
   const [errors, setErrors] = useState(initialErrorState)
 
   const [availableUsers, setAvailableUsers] = useState({
-    totalUsers: 0,
+    total: 0,
     totalPages: 1,
     data: []
   })
@@ -52,13 +52,24 @@ const BettingProviderView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      // const data = await getAPIService(APIConstants.GET_USERS, {
-      //   ...paginationOptions,
-      //   // searchAccount: searchAccount,
-      //   filter: filterData,
-      //   sortFields: sortFields
-      // })
-      setAvailableUsers(bettingProvidersData)
+      const data = await getAPIService(
+        APIConstants.PROVIDERS + '/' + auth.profile._id,
+        {},
+        'GET'
+      )
+      if (data.providers) {
+        setAvailableUsers({
+          total: data.providers.length,
+          totalPages: 1,
+          data: data.providers
+        })
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.error
+        })
+      }
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -76,30 +87,23 @@ const BettingProviderView = () => {
   }, [])
 
   useEffect(() => {
-    getUsers()
-  }, [paginationOptions, sortFields])
-
-  // useEffect(() => {
-  //   if (!modalsState.editUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.editUser])
-
-  // useEffect(() => {
-  //   if (!modalsState.deleteUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.deleteUser])
-
-  // useEffect(() => {
-  //   if (!modalsState.createUser) {
-  //     getUsers()
-  //   }
-  // }, [modalsState.createUser])
+    if (
+      !modalsState.createUser &&
+      !modalsState.editUser &&
+      !modalsState.changeUserPassword &&
+      !modalsState.deleteUser
+    ) {
+      getUsers()
+    }
+  }, [
+    JSON.stringify(paginationOptions),
+    JSON.stringify(sortFields),
+    JSON.stringify(modalsState)
+  ])
 
   const [sortColumns, setSortColumns] = useState([
     {
-      id: 'fname',
+      id: 'name',
       desc: false
     }
   ])
@@ -184,42 +188,29 @@ const BettingProviderView = () => {
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  let data = bettingProvidersData
-                  data.data = data.data.filter(
-                    (item) => item.id !== rowData.original.id
+                  getAPIService(
+                    APIConstants.PROVIDERS + '/' + rowData.original._id,
+                    {},
+                    'DELETE'
                   )
-                  setModalsState({
-                    ...modalsState,
-                    deleteUser: false
-                  })
-                  Swal.fire(
-                    'Betting Provider Deleted!',
-                    'Betting Provider has been deleted.',
-                    'success'
-                  )
-                  setAvailableUsers(data)
-                  // getAPIService(APIConstants.DELETE_USER, {
-                  //   editUserId: rowData.original._id,
-                  //   email: rowData.original.email
-                  // })
-                  //   .then(() => {
-                  //     setModalsState({
-                  //       ...modalsState,
-                  //       deleteUser: false
-                  //     })
-                  //     Swal.fire(
-                  //       'User Deleted!',
-                  //       'User has been deleted.',
-                  //       'success'
-                  //     )
-                  //   })
-                  //   .catch((err) => {
-                  //     Swal.fire({
-                  //       icon: 'error',
-                  //       title: 'Oops...',
-                  //       text: err
-                  //     })
-                  //   })
+                    .then(() => {
+                      setModalsState({
+                        ...modalsState,
+                        deleteUser: false
+                      })
+                      Swal.fire(
+                        'User Deleted!',
+                        'User has been deleted.',
+                        'success'
+                      )
+                    })
+                    .catch((err) => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err
+                      })
+                    })
                 }
               })
             }}
@@ -257,54 +248,33 @@ const BettingProviderView = () => {
             }}
             onPrimaryClick={(updatedData) => {
               setLoading('UpdatingUser')
-              setModalsState({
-                ...modalsState,
-                editUser: false
-              })
-              let data = availableUsers
-              for (let i = 0; i < data.data.length; i++) {
-                if (data.data[i].id === updatedData.id) {
-                  data.data[i] = updatedData
-                }
-              }
-              setAvailableUsers(data)
 
-              Swal.fire({
-                icon: 'success',
-                text: 'Updated',
-                showConfirmButton: false,
-                timer: 1500
-              })
-              setLoading('')
-              // getAPIService(
-              //   APIConstants.UPDATE_USER,
-              //   {
-              //     editUserId: updatedData._id,
-              //     userData: { ...updatedData }
-              //   },
-              //   'PUT'
-              // )
-              //   .then(() => {
-              //     setModalsState({
-              //       ...modalsState,
-              //       editUser: false
-              //     })
-              //     Swal.fire({
-              //       icon: 'success',
-              //       text: 'User Updated',
-              //       showConfirmButton: false,
-              //       timer: 1500
-              //     })
-              //     setLoading('')
-              //   })
-              //   .catch((err) => {
-              //     Swal.fire({
-              //       icon: 'error',
-              //       title: 'Oops...',
-              //       text: err
-              //     })
-              //     setLoading('')
-              //   })
+              getAPIService(
+                APIConstants.PROVIDERS + '/' + updatedData._id,
+                { name: updatedData.name, url: updatedData.url },
+                'PUT'
+              )
+                .then(() => {
+                  setModalsState({
+                    ...modalsState,
+                    editUser: false
+                  })
+                  Swal.fire({
+                    icon: 'success',
+                    text: 'User Updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  setLoading('')
+                })
+                .catch((err) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err
+                  })
+                  setLoading('')
+                })
             }}
             isLoading={loading === 'UpdatingUser'}
             primaryActionName={'Update'}
@@ -329,48 +299,35 @@ const BettingProviderView = () => {
         primaryActionName={'Create'}
         secondaryActionName={'Close'}
         onPrimaryClick={(newUserData) => {
-          newUserData.id = Math.random()
-          setLoading('CreatingUser')
-          let data = availableUsers
-          data.data.push(newUserData)
-          setAvailableUsers(data)
-          setUserData(initialUserState)
-          Swal.fire({
-            icon: 'success',
-            text: 'User Created',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          setLoading('')
-          setModalsState({
-            ...modalsState,
-            createUser: false
-          })
-          // getAPIService(APIConstants.REGISTER, newUserData)
-          //   .then(() => {
-          //     setUserData(initialUserState)
-          //     Swal.fire({
-          //       icon: 'success',
-          //       text: 'User Created',
-          //       showConfirmButton: false,
-          //       timer: 1500
-          //     })
-          //     setLoading('')
-          //   })
-          //   .catch((err) => {
-          //     Swal.fire({
-          //       icon: 'error',
-          //       title: 'Oops...',
-          //       text: err
-          //     })
-          //     setLoading('')
-          //   })
-          //   .finally(() => {
-          //     setModalsState({
-          //       ...modalsState,
-          //       createUser: false
-          //     })
-          //   })
+          getAPIService(
+            APIConstants.PROVIDERS + '/create',
+            { ...newUserData, user_id: auth.profile._id },
+            'POST'
+          )
+            .then(() => {
+              setUserData(initialUserState)
+              Swal.fire({
+                icon: 'success',
+                text: 'User Created',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading('')
+            })
+            .catch((err) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: err
+              })
+              setLoading('')
+            })
+            .finally(() => {
+              setModalsState({
+                ...modalsState,
+                createUser: false
+              })
+            })
         }}
         isLoading={loading === 'CreatingUser'}
         onSecondaryClick={() => {

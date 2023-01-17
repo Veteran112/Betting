@@ -198,6 +198,31 @@ const ManageAccountsView = () => {
               })
               setCurrentlyEditingUser(rowData.original)
             }}
+            onBlock={(rowData, action) => {
+              getAPIService(APIConstants.BLOCK_USER, {
+                id: rowData.original._id,
+                action
+              })
+                .then(() => {
+                  setModalsState({
+                    ...modalsState,
+                    deleteUser: false
+                  })
+                  Swal.fire(
+                    `User ${action ? 'blocked' : 'unblocked'}!`,
+                    `User has been ${action ? 'blocked' : 'unblocked'}.`,
+                    'success'
+                  )
+                  getUsers()
+                })
+                .catch((err) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err
+                  })
+                })
+            }}
             onPasswordUpdate={(rowData) => {
               setModalsState({
                 ...modalsState,
