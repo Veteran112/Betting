@@ -19,6 +19,7 @@ const ForgotPasswordContainer = React.lazy(() => import('pages/ForgotPassword'))
 const ResetPasswordContainer = React.lazy(() => import('pages/ResetPassword'))
 const Dashboard = React.lazy(() => import('pages/Dashboard'))
 const Bet = React.lazy(() => import('pages/Bet'))
+const BetHistory = React.lazy(() => import('pages/History'))
 
 export const RouterConfig = () => {
   return (
@@ -125,6 +126,18 @@ export const RouterConfig = () => {
               <div>
                 <Navbar />
                 <Bet />
+              </div>
+              // </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/history"
+            element={
+              // <PrivateRoute>
+              <div>
+                <Navbar />
+                <BetHistory />
               </div>
               // </PrivateRoute>
             }

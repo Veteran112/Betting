@@ -100,7 +100,7 @@ const betsData = {
       market: 'fffff'
     },
     {
-      id: 1,
+      id: 2,
       percent: 1.4,
       date: '09-02-22 08:45AM',
       event: 'BASEBALL xxx vs. xxx',
@@ -108,7 +108,7 @@ const betsData = {
       market: 'fffff'
     },
     {
-      id: 1,
+      id: 3,
       percent: 1.2,
       date: '09-02-22 08:45AM',
       event: 'BASEBALL xxx vs. xxx',
@@ -127,8 +127,42 @@ const betDetailData = {
       books: [+110, +110, +110]
     },
     {
-      id: 1,
+      id: 2,
       books: [-104, -104, 120]
+    }
+  ]
+}
+
+const betHistoryData = {
+  total: 3,
+  totalPages: 1,
+  data: [
+    {
+      id: 1,
+      date: '09-02-22 08:45AM',
+      event: 'BASEBALL xxx vs. xxx',
+      odds: [-250, 290],
+      stake: [900.0, 323.08],
+      payout: [1260.0, 1260.0],
+      profit: 36.92
+    },
+    {
+      id: 2,
+      date: '09-02-22 08:45AM',
+      event: 'BASEBALL xxx vs. xxx',
+      odds: [-250, 290],
+      stake: [900.0, 323.08],
+      payout: [1260.0, 1260.0],
+      profit: 36.92
+    },
+    {
+      id: 3,
+      date: '09-02-22 08:45AM',
+      event: 'BASEBALL xxx vs. xxx',
+      odds: [-250, 290],
+      stake: [900.0, 323.08],
+      payout: [1260.0, 1260.0],
+      profit: 36.92
     }
   ]
 }
@@ -138,5 +172,6 @@ export {
   bettingProvidersData,
   providersData,
   betsData,
-  betDetailData
+  betDetailData,
+  betHistoryData
 }
