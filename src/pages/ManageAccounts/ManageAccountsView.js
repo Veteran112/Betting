@@ -112,34 +112,19 @@ const ManageAccountsView = () => {
   }, [])
 
   useEffect(() => {
-    getUsers()
-  }, [paginationOptions, sortFields])
-
-  useEffect(() => {
-    setPaginationOptions({
-      page: 1,
-      limit: 10
-    })
-    getUsers()
-  }, [filterData])
-
-  useEffect(() => {
-    if (!modalsState.editUser) {
+    if (
+      !modalsState.createUser &&
+      !modalsState.editUser &&
+      !modalsState.changeUserPassword &&
+      !modalsState.deleteUser
+    ) {
       getUsers()
     }
-  }, [modalsState.editUser])
-
-  useEffect(() => {
-    if (!modalsState.deleteUser) {
-      getUsers()
-    }
-  }, [modalsState.deleteUser])
-
-  useEffect(() => {
-    if (!modalsState.createUser) {
-      getUsers()
-    }
-  }, [modalsState.createUser])
+  }, [
+    JSON.stringify(paginationOptions),
+    JSON.stringify(sortFields),
+    JSON.stringify(modalsState)
+  ])
 
   const [sortColumns, setSortColumns] = useState([
     {
