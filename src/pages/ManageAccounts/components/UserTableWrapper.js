@@ -41,6 +41,7 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
+              {!row.original.block ? 'Active' : 'Inactive'}
               <Button
                 className="_btn ml-2"
                 onClick={() => props.onBlock(row, !row.original.block)}
