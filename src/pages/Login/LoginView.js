@@ -15,13 +15,13 @@ const LoginView = () => {
   const login = async () => {
     const res = await auth.login(email, password.toLocaleLowerCase())
     if (!res) {
-      history('/profile')
+      history('/betting_provider')
     }
   }
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      history('/profile')
+      history('/betting_provider')
     }
   }, [])
   return (

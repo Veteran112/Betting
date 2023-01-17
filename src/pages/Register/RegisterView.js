@@ -38,12 +38,12 @@ const RegisterView = () => {
     console.log('registering')
     const res = await auth.register(data)
     if (res) {
-      history('/profile')
+      history('/betting_provider')
     }
   }
   useEffect(() => {
     if (auth.isAuthenticated) {
-      history('/profile')
+      history('/betting_provider')
     }
   }, [])
 
