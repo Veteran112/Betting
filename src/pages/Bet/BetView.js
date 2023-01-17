@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CircularProgress, Typography } from '@mui/material'
+import { CircularProgress } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
 // import { getAPIService } from 'services/apiServices'
 // import APIConstants from 'services/CONSTANTS'
