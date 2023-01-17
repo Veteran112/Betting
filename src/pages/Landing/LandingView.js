@@ -87,7 +87,7 @@ const LandingView = () => {
                     {' '}
                     Provider{' '}
                   </Link>
-                  {auth.profile.userType === 'admin' && (
+                  {auth.profile && auth.profile.userType === 'admin' && (
                     <Link
                       sx={{
                         color: '#ccc !important',
@@ -153,54 +153,49 @@ const LandingView = () => {
                   display: { xs: 'block', md: 'none' }
                 }}
               >
-                {auth.isAuthenticated ? (
-                  <MenuItem
-                    onClick={() => {
-                      handleCloseNavMenu()
-                      navigate('/profile')
-                    }}
-                  >
-                    <Typography>profile</Typography>
-                  </MenuItem>
-                ) : (
-                  <>
+                <div>
+                  {!auth.isAuthenticated && (
+                    <div>
+                      <MenuItem
+                        onClick={() => {
+                          handleCloseNavMenu()
+                          navigate('/login')
+                        }}
+                      >
+                        <Typography>Sign In</Typography>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          handleCloseNavMenu()
+                          navigate('/register')
+                        }}
+                      >
+                        <Typography>Sign Up</Typography>
+                      </MenuItem>
+                    </div>
+                  )}
+                  {auth.isAuthenticated &&
+                    auth.profile &&
+                    auth.profile.userType === 'admin' && (
+                      <MenuItem
+                        onClick={() => {
+                          navigate('/manage_users')
+                        }}
+                      >
+                        <Typography>Manage accounts</Typography>
+                      </MenuItem>
+                    )}
+                  {auth.isAuthenticated && (
                     <MenuItem
                       onClick={() => {
+                        auth.logout()
                         handleCloseNavMenu()
-                        navigate('/login')
                       }}
                     >
-                      <Typography>Sign In</Typography>
+                      <Typography>Logout</Typography>
                     </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        handleCloseNavMenu()
-                        navigate('/register')
-                      }}
-                    >
-                      <Typography>Sign Up</Typography>
-                    </MenuItem>
-                  </>
-                )}
-                {auth.isAuthenticated && auth.profile.userType === 'admin' && (
-                  <MenuItem
-                    onClick={() => {
-                      navigate('/manage_users')
-                    }}
-                  >
-                    <Typography>Manage accounts</Typography>
-                  </MenuItem>
-                )}
-                {auth.isAuthenticated && (
-                  <MenuItem
-                    onClick={() => {
-                      auth.logout()
-                      handleCloseNavMenu()
-                    }}
-                  >
-                    <Typography>Logout</Typography>
-                  </MenuItem>
-                )}
+                  )}
+                </div>
               </Menu>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

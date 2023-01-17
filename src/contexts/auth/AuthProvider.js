@@ -14,10 +14,14 @@ const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setIsAuthenticating(true)
+
       const data = await authServices.login(email, password)
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('neon-user', JSON.stringify(data.user))
-      axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
+      if (data.user && data.token) {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('neon-user', JSON.stringify(data.user))
+        axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
+      }
+
       setProfile(data.user)
       userHasAuthenticated(true)
       setIsAuthenticating(false)
@@ -118,7 +122,7 @@ const AuthProvider = ({ children }) => {
         userHasAuthenticated(isLoggedIn)
         if (isLoggedIn) {
           const token = localStorage.getItem('token')
-          axiosInstance.defaults.headers.common['Authorization'] = token
+          axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + token
           setProfile(JSON.parse(localStorage.getItem('neon-user')))
         }
       })

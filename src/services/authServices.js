@@ -12,7 +12,7 @@ class AuthService {
         const token = localStorage.getItem('token')
         if (!token) resolve(false)
         const payload = jwt(token)
-        if (payload.expire > Date.now()) {
+        if (payload.iat) {
           resolve(true)
         } else {
           this.logout()
@@ -86,7 +86,7 @@ class AuthService {
   }
 
   logout = async (navigateToLogin = false) => {
-    delete axiosInstance.defaults.headers.common['Authorization']
+    delete axiosInstance.defaults.headers['Authorization']
     localStorage.removeItem('token')
     localStorage.clear()
     if (navigateToLogin) {

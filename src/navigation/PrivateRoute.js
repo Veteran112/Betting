@@ -17,7 +17,7 @@ function PrivateRoute({ children }) {
       }
     }
     if (!isLoggedIn) return <Navigate to="/" />
-    axiosInstance.defaults.headers.common['Authorization'] = token
+    axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + token
     return children
   } catch (error) {
     return <Navigate to="/" />
