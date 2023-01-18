@@ -20,6 +20,11 @@ const TableWrapper = (props) => {
         disableSortBy: true
       },
       {
+        Header: 'EVENT',
+        accessor: 'event',
+        disableSortBy: true
+      },
+      {
         Header: 'BOOKS',
         accessor: 'books',
         disableSortBy: true,
