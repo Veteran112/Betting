@@ -66,10 +66,7 @@ const TableWrapper = (props) => {
                 placeholder={'MAX $' + totalAmount}
                 label={'MAX $' + totalAmount}
                 variant="outlined"
-                onChange={(e) =>
-                  props.stakeHandle(e.target.value, row.original.id)
-                }
-                value={row.original.stake}
+                onChange={() => props.stakeHandle()}
                 type="number"
               />
             </>
@@ -87,12 +84,69 @@ const TableWrapper = (props) => {
 
   return (
     <>
-      <RTable
-        data={props.data}
-        columns={columns}
-        style={{ height: 'auto' }}
-        paginationBool={false}
-      />
+      <div className="d-none">
+        <RTable
+          data={props.data}
+          columns={columns}
+          style={{ height: 'auto' }}
+          paginationBool={false}
+        />
+      </div>
+      <table className="r-table r-table-full table-hover">
+        <thead className="bg-light font-weight-500 font-size-15">
+          <tr>
+            <th></th>
+            <th>BOOKS</th>
+            <th>ODDS</th>
+            <th>STAKE</th>
+            <th>PAYOUT</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.data.map((item, index) => (
+            <tr key={index}>
+              <td>Max</td>
+              <td>
+                {item.amount &&
+                  item.amount.split(',').map((amountItem, index) => (
+                    <span className="mr-2" key={index}>
+                      {item.book > 0 && <>+</>}
+                      {item.book}
+                      <SquareIcon color="primary" />
+                    </span>
+                  ))}
+                <br />
+                {item.amount &&
+                  item.amount.split(',').map((amountItem, index) => (
+                    <span className="mr-3" key={index}>
+                      <span key={index}>$</span>
+                      {amountItem}
+                    </span>
+                  ))}
+              </td>
+              <td>
+                {item.odds > 0 && <>+</>} {item.odds}
+              </td>
+              <td>
+                <TextField
+                  placeholder={'MAX $' + item.totalAmount}
+                  label={'MAX $' + item.totalAmount}
+                  variant="outlined"
+                  onChange={(e) => props.stakeHandle(e.target.value, index)}
+                  type="number"
+                />
+              </td>
+              <td>
+                {item.payout && (
+                  <>
+                    $ <span>{item.payout}</span>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <Box className="overflow-auto w-100">
         <Box className="p-2" style={{ width: '300px', float: 'right' }}>
           <Grid container spacing={2}>
@@ -100,7 +154,7 @@ const TableWrapper = (props) => {
               <Typography>Total Stake</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography>$1233.92</Typography>
+              <Typography>${props.totalStake}</Typography>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -108,7 +162,13 @@ const TableWrapper = (props) => {
               <Typography>Total Payout</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography>$1900.32</Typography>
+              <Typography>
+                {props.totalPayout && (
+                  <>
+                    $ <span>{props.totalPayout}</span>
+                  </>
+                )}
+              </Typography>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -116,7 +176,13 @@ const TableWrapper = (props) => {
               <Typography>Profit(2.93%)</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography>$32.93</Typography>
+              <Typography>
+                {props.profit && (
+                  <>
+                    $ <span>{props.profit}</span>
+                  </>
+                )}
+              </Typography>
             </Grid>
           </Grid>
         </Box>
@@ -144,10 +210,27 @@ const TableWrapper = (props) => {
                 {item.odds > 0 && <>+</>} {item.odds}
               </td>
               <td>
-                {item.stake && <>$</>} {item.stake}
+                {item.stake && (
+                  <>
+                    $ <span>{item.stake}</span>
+                  </>
+                )}
               </td>
-              <td>$ {item.payout}</td>
-              <td>$36.92 (2.93%)</td>
+              <td>
+                {item.payout && (
+                  <>
+                    $ <span>{item.payout}</span>
+                  </>
+                )}
+              </td>
+              <td>
+                {props.profit && (
+                  <>
+                    $ <span>{props.profit}</span>
+                  </>
+                )}{' '}
+                (2.93%)
+              </td>
             </tr>
           ))}
         </tbody>
@@ -160,6 +243,9 @@ TableWrapper.propTypes = {
   data: PropTypes.any,
   row: PropTypes.array,
   acceptedBet: PropTypes.any,
-  stakeHandle: PropTypes.func
+  stakeHandle: PropTypes.func,
+  totalStake: PropTypes.any,
+  totalPayout: PropTypes.any,
+  profit: PropTypes.any
 }
 export default TableWrapper

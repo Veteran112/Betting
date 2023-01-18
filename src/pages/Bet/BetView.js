@@ -11,24 +11,11 @@ import { betDetailData } from 'data'
 const BetView = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const [availableBets, setAvailableBets] = useState([
-    {
-      id: 2,
-      book: -104,
-      amount: '1200,950,250',
-      odds: 290,
-      payout: 0
-    }
-  ])
-  const [acceptedBet, setAcceptedBet] = useState([
-    {
-      id: 2,
-      book: -104,
-      amount: '1200,950,250',
-      odds: 290,
-      payout: 0
-    }
-  ])
+  const [availableBets, setAvailableBets] = useState([])
+  const [acceptedBet, setAcceptedBet] = useState([])
+  const [totalStake, setTotalStake] = useState(0)
+  const [totalPayout, setTotalPayout] = useState(0)
+  const [profit, setProfit] = useState(0)
 
   const getBets = async () => {
     setIsLoading(true)
@@ -39,6 +26,13 @@ const BetView = () => {
       //   filter: filterData,
       //   sortFields: sortFields
       // })
+      for (let k = 0; k < betDetailData.length; k++) {
+        let totalAmount = 0
+        for (let i = 0; i < betDetailData[k].amount.split(',').length; i++) {
+          totalAmount += parseFloat(betDetailData[k].amount.split(',')[i])
+        }
+        betDetailData[k].totalAmount = totalAmount
+      }
       setAvailableBets(betDetailData)
       setAcceptedBet(betDetailData)
     } catch (err) {
@@ -57,16 +51,19 @@ const BetView = () => {
   }, [])
 
   useEffect(() => {
-    console.log(availableBets)
-  }, [JSON.stringify(availableBets)])
+    if (totalPayout && totalStake) {
+      setProfit((parseFloat(totalPayout) - parseFloat(totalStake)).toFixed(2))
+    } else {
+      setProfit(null)
+    }
+  }, [totalPayout, totalStake])
 
-  const stakeHandle = (value, id) => {
-    let arr = betDetailData
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].id === id) {
-        arr[i].stake = parseFloat(value)
-        let payout = 0
-        const odds = arr[i].odds
+  const stakeHandle = (value, index) => {
+    let arr = availableBets
+    const newArray = arr.map((item, i) => {
+      if (index === i) {
+        let payout = null
+        const odds = item.odds
         if (value !== '') {
           if (odds > 0) {
             payout = value * (1 + Math.abs(odds) / 100)
@@ -74,12 +71,27 @@ const BetView = () => {
             payout = value * (1 + 100 / Math.abs(odds))
           }
         }
-        arr[i].payout = payout
+        setTotalPayout(payout ? payout.toFixed(2) : null)
+        return {
+          ...item,
+          stake: value,
+          payout: payout ? payout.toFixed(2) : null
+        }
+      } else {
+        return item
+      }
+    })
+
+    let totalStakeAmount = 0
+    for (let i = 0; i < newArray.length; i++) {
+      if (newArray[i].stake) {
+        totalStakeAmount += parseFloat(newArray[i].stake)
       }
     }
 
-    setAvailableBets(arr)
-    setAcceptedBet(arr)
+    setTotalStake(totalStakeAmount.toFixed(2))
+    setAvailableBets(newArray)
+    setAcceptedBet(newArray)
   }
 
   return (
@@ -113,6 +125,9 @@ const BetView = () => {
             data={availableBets}
             acceptedBet={acceptedBet}
             stakeHandle={stakeHandle}
+            totalStake={totalStake}
+            totalPayout={totalPayout}
+            profit={profit}
           />
         </div>
       </div>
