@@ -1,7 +1,7 @@
 const BASE_URL = `${
   process.env.REACT_APP_BASE_URL
     ? process.env.REACT_APP_BASE_URL
-    : 'http://localhost:8080'
+    : 'https://betting-backend-three.vercel.app'
 }/api`
 const GET_ALL_USERS = `${BASE_URL}/users`
 const LOGIN = `${BASE_URL}/auth/signin`
