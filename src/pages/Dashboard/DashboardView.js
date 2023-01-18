@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { CircularProgress, Typography } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
-// import { getAPIService } from 'services/apiServices'
-// import APIConstants from 'services/CONSTANTS'
+import { getAPIService } from 'services/apiServices'
+import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import TableWrapper from './components/TableWrapper'
-import { betsData } from 'data'
 
 const DashboardView = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const [availableBets, setAvailableBets] = useState({
-    total: 0,
-    totalPages: 1,
-    data: []
-  })
+  const [availableBets, setAvailableBets] = useState([])
 
   const getBets = async () => {
     setIsLoading(true)
     try {
-      // const data = await getAPIService(APIConstants.GET_USERS, {
-      //   ...paginationOptions,
-      //   // searchAccount: searchAccount,
-      //   filter: filterData,
-      //   sortFields: sortFields
-      // })
-      setAvailableBets(betsData)
+      const data = await getAPIService(APIConstants.BETS, {}, 'GET')
+
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.error
+        })
+      } else {
+        setAvailableBets(data)
+      }
     } catch (err) {
       console.log(err)
       Swal.fire({

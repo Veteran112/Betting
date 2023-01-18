@@ -17,6 +17,7 @@ const RESET_PASSWORD = `${BASE_URL}/auth/recover_password`
 const PROVIDERS = `${BASE_URL}/providers`
 const COMMANDS = `${BASE_URL}/commands`
 const HISTORY = `${BASE_URL}/history`
+const BETS = `${BASE_URL}/bets`
 
 export default {
   GET_ALL_USERS,
@@ -32,5 +33,6 @@ export default {
   RESET_PASSWORD,
   PROVIDERS,
   COMMANDS,
-  HISTORY
+  HISTORY,
+  BETS
 }
