@@ -33,5 +33,27 @@
       color: white;
     }
   }
+}
 
+.fixTableHead {
+  overflow-y: auto;
+  height: 400px;
+  thead th {
+    position: sticky;
+    top: 0;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 8px 15px;
+    border: 1px solid #529432 !important;
+  }
+  th {
+    background: #abdd93;
+    z-index: 99;
+  }
 }

@@ -5,7 +5,6 @@ import { PrimaryButton } from 'components/StyledButton'
 // import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import TableWrapper from './components/TableWrapper'
-
 import { betsData } from 'data'
 
 const DashboardView = () => {
@@ -63,7 +62,7 @@ const DashboardView = () => {
             <PrimaryButton>Update</PrimaryButton>
           </div>
         </div>
-        <div>
+        <div className="fixTableHead">
           <TableWrapper data={availableBets} />
         </div>
       </div>

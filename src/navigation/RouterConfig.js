@@ -95,7 +95,7 @@ export const RouterConfig = () => {
           />
           <Route
             exact
-            path="/dashboard"
+            path="/bet"
             element={
               <PrivateRoute>
                 <div>
@@ -107,7 +107,7 @@ export const RouterConfig = () => {
           />
           <Route
             exact
-            path="/bet"
+            path="/bet/:id"
             element={
               <PrivateRoute>
                 <div>

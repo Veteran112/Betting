@@ -31,6 +31,15 @@ const ExtendedMenu = () => {
           <ul className="mt-2">
             <li
               onClick={() => {
+                navigate('/bet')
+              }}
+            >
+              Bet
+            </li>
+          </ul>
+          <ul className="mt-2">
+            <li
+              onClick={() => {
                 navigate('/history')
               }}
             >

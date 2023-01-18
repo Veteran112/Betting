@@ -93,6 +93,17 @@ const LandingView = () => {
                       cursor: 'pointer',
                       marginRight: '20px'
                     }}
+                    href="/bet"
+                  >
+                    {' '}
+                    Bet{' '}
+                  </Link>
+                  <Link
+                    sx={{
+                      color: '#ccc !important',
+                      cursor: 'pointer',
+                      marginRight: '20px'
+                    }}
                     href="/history"
                   >
                     {' '}

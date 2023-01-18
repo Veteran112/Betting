@@ -41,7 +41,10 @@ const TableWrapper = (props) => {
           return (
             <>
               {row.original.market}
-              <Button className="_btn ml-2" onClick={() => history('/bet')}>
+              <Button
+                className="_btn ml-2"
+                onClick={() => history(`/bet/${row.original.id}`)}
+              >
                 BET
               </Button>
             </>
