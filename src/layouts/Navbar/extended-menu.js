@@ -28,6 +28,15 @@ const ExtendedMenu = () => {
               Provider
             </li>
           </ul>
+          <ul className="mt-2">
+            <li
+              onClick={() => {
+                navigate('/history')
+              }}
+            >
+              History
+            </li>
+          </ul>
 
           {auth.profile.userType === 'admin' && (
             <ul className="mt-2">

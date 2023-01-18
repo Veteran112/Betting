@@ -1,16 +1,5 @@
-import React, { useEffect } from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  MenuItem
-} from '@mui/material'
-// import logoImg from 'assets/images/logo.png'
+import React from 'react'
+import { AppBar, Box, Toolbar, Container, MenuItem } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { MenuButton } from 'components/StyledButton'
 import Link from '@mui/material/Link'
@@ -18,11 +7,6 @@ import { useNavigate, useLocation } from 'react-router'
 import { toneWhite } from 'config/Color'
 import { useAuth } from 'contexts'
 import ExtendedMenu from './extended-menu'
-
-const pages = [
-  { name: 'Home', path: '/' },
-  { name: 'Profile', path: '/profile' }
-]
 
 const useStyles = makeStyles({
   root: {
@@ -45,46 +29,15 @@ const useStyles = makeStyles({
 })
 
 const Navbar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
-  // const [anchorElUser, setAnchorElUser] = React.useState(null)
   const styles = useStyles()
   const navigate = useNavigate()
   const location = useLocation()
   const auth = useAuth()
 
-  console.log(auth, 'header')
-  useEffect(() => {
-    console.log(auth, 'header')
-  }, [])
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
-  }
-
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget)
-  // }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
   return (
     <AppBar position="static" color="inherit">
       <Container maxWidth="xl">
         <Toolbar disableGutters className={styles.toolbar}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'flex', md: 'flex' } }}
-          >
-            {/* <Link className="navbar-brand" underline="none" href="/">
-              <div className="img-fluid logo-img d-flex">
-                <img className="logo-small-img" src={logoImg} alt="logo_img" />
-              </div>
-            </Link> */}
-          </Typography>
           <Box sx={{ ml: 'auto', display: { xs: 'none', md: 'flex' } }}>
             <MenuButton
               onClick={() => {
@@ -109,72 +62,6 @@ const Navbar = () => {
                 <ExtendedMenu />
               </MenuItem>
             )}
-          </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left'
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' }
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.name}
-                  onClick={() => {
-                    handleCloseNavMenu()
-                    navigate(page.path)
-                  }}
-                >
-                  <Typography>{page.name}</Typography>
-                </MenuItem>
-              ))}
-              {auth.isAuthenticated && auth.profile.userType === 'admin' && (
-                <MenuItem
-                  onClick={() => {
-                    navigate('/manage_users')
-                  }}
-                >
-                  <Typography>Manage accounts</Typography>
-                </MenuItem>
-              )}
-              {auth.isAuthenticated && (
-                <MenuItem
-                  onClick={() => {
-                    auth.logout()
-                    handleCloseNavMenu()
-                  }}
-                >
-                  <Typography>Logout</Typography>
-                </MenuItem>
-              )}
-            </Menu>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="medium"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-              sx={{
-                display: { xs: 'block', md: 'none' }
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
           </Box>
         </Toolbar>
       </Container>

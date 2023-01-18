@@ -87,6 +87,17 @@ const LandingView = () => {
                     {' '}
                     Provider{' '}
                   </Link>
+                  <Link
+                    sx={{
+                      color: '#ccc !important',
+                      cursor: 'pointer',
+                      marginRight: '20px'
+                    }}
+                    href="/history"
+                  >
+                    {' '}
+                    History{' '}
+                  </Link>
                   {auth.profile && auth.profile.userType === 'admin' && (
                     <Link
                       sx={{
@@ -173,6 +184,24 @@ const LandingView = () => {
                         <Typography>Sign Up</Typography>
                       </MenuItem>
                     </div>
+                  )}
+                  {auth.isAuthenticated && (
+                    <>
+                      <MenuItem
+                        onClick={() => {
+                          navigate('/provider')
+                        }}
+                      >
+                        <Typography>Provider</Typography>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          navigate('/history')
+                        }}
+                      >
+                        <Typography>History</Typography>
+                      </MenuItem>
+                    </>
                   )}
                   {auth.isAuthenticated &&
                     auth.profile &&
