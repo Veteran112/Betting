@@ -8,8 +8,25 @@ const TableWrapper = (props) => {
     () => [
       {
         Header: 'DATE',
-        accessor: 'date',
-        disableSortBy: true
+        accessor: 'date_create',
+        disableSortBy: true,
+        Cell: ({ row }) => {
+          const d = new Date(row.original.date_create)
+          let hour = d.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+          })
+          const dateCreated =
+            ('0' + (d.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + d.getDate()).slice(-2) +
+            '-' +
+            ('' + d.getFullYear()).slice(-2) +
+            ' ' +
+            hour
+          return <span>{dateCreated}</span>
+        }
       },
       {
         Header: 'EVENT',
@@ -21,7 +38,7 @@ const TableWrapper = (props) => {
         accessor: 'odds',
         disableSortBy: true,
         Cell: ({ row }) => {
-          return row.original.odds.map((item, index) => (
+          return row.original.odds.split(',').map((item, index) => (
             <div key={index}>
               {item > 0 && <>+</>}
               {item}
@@ -35,7 +52,7 @@ const TableWrapper = (props) => {
         accessor: 'stake',
         disableSortBy: true,
         Cell: ({ row }) => {
-          return row.original.stake.map((item, index) => (
+          return row.original.stake.split(',').map((item, index) => (
             <div key={index}>
               <span className="mr-1">$</span>
               {item}
@@ -48,10 +65,16 @@ const TableWrapper = (props) => {
         accessor: 'payout',
         disableSortBy: true,
         Cell: ({ row }) => {
-          return row.original.payout.map((item, index) => (
+          const odds = row.original.odds.split(',')
+          const stakes = row.original.stake.split(',')
+          return odds.map((item, index) => (
             <div key={index}>
               <span className="mr-1">$</span>
-              {item}
+              {item > 0 ? (
+                <>{(stakes[index] * (1 + Math.abs(item) / 100)).toFixed(2)}</>
+              ) : (
+                <>{(stakes[index] * (1 + 100 / Math.abs(item))).toFixed(2)}</>
+              )}
             </div>
           ))
         }
@@ -61,7 +84,27 @@ const TableWrapper = (props) => {
         accessor: 'profit',
         disableSortBy: true,
         Cell: ({ row }) => {
-          return <span>$ {row.original.profit} (2.93%)</span>
+          const odds = row.original.odds.split(',')
+          const stakes = row.original.stake.split(',')
+          let totalStake = 0
+          for (let i = 0; i < stakes.length; i++) {
+            totalStake += parseFloat(stakes[i])
+          }
+          let payout = 0
+          if (odds[0] > 0) {
+            payout = stakes[0] * (1 + Math.abs(odds[0]) / 100)
+          } else {
+            payout = stakes[0] * (1 + 100 / Math.abs(odds[0]))
+          }
+          return (
+            <>
+              <span className="mr-1">$</span>
+              {(payout - totalStake).toFixed(2)}
+              <span className="ml-2">
+                ({(((payout - totalStake) / payout) * 100).toFixed(2)}%)
+              </span>
+            </>
+          )
         }
       }
     ],
@@ -74,7 +117,6 @@ const TableWrapper = (props) => {
         data={props.data.data}
         columns={columns}
         style={{ height: 'auto' }}
-        paginationBool={false}
       />
     </>
   )

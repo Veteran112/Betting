@@ -118,20 +118,22 @@ const betsData = {
   ]
 }
 
-const betDetailData = {
-  total: 2,
-  totalPages: 1,
-  data: [
-    {
-      id: 1,
-      books: [+110, +110, +110]
-    },
-    {
-      id: 2,
-      books: [-104, -104, 120]
-    }
-  ]
-}
+const betDetailData = [
+  {
+    id: 1,
+    book: 110,
+    amount: '900,450,700',
+    odds: -250,
+    payout: 0
+  },
+  {
+    id: 2,
+    book: -104,
+    amount: '1200,950,250',
+    odds: 290,
+    payout: 0
+  }
+]
 
 const betHistoryData = {
   total: 3,

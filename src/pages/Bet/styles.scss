@@ -33,5 +33,16 @@
       color: white;
     }
   }
+}
 
+/* webkit solution */
+::-webkit-input-placeholder {
+  text-align: left;
+}
+/* mozilla solution */
+input:-moz-placeholder {
+  text-align: left;
+}
+input {
+  text-align: right;
 }

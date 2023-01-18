@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { CircularProgress, Typography } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
-// import { getAPIService } from 'services/apiServices'
-// import APIConstants from 'services/CONSTANTS'
+import { getAPIService } from 'services/apiServices'
+import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import TableWrapper from './components/TableWrapper'
-
-import { betHistoryData } from 'data'
 
 const HistoryView = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -20,13 +18,20 @@ const HistoryView = () => {
   const getBets = async () => {
     setIsLoading(true)
     try {
-      // const data = await getAPIService(APIConstants.GET_USERS, {
-      //   ...paginationOptions,
-      //   // searchAccount: searchAccount,
-      //   filter: filterData,
-      //   sortFields: sortFields
-      // })
-      setAvailableBets(betHistoryData)
+      const data = await getAPIService(APIConstants.HISTORY, {}, 'GET')
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: data.error
+        })
+      } else {
+        setAvailableBets({
+          total: data.length,
+          totalPages: 1,
+          data: data
+        })
+      }
     } catch (err) {
       console.log(err)
       Swal.fire({

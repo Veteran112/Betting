@@ -11,11 +11,24 @@ import { betDetailData } from 'data'
 const BetView = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const [availableBets, setAvailableBets] = useState({
-    total: 0,
-    totalPages: 1,
-    data: []
-  })
+  const [availableBets, setAvailableBets] = useState([
+    {
+      id: 2,
+      book: -104,
+      amount: '1200,950,250',
+      odds: 290,
+      payout: 0
+    }
+  ])
+  const [acceptedBet, setAcceptedBet] = useState([
+    {
+      id: 2,
+      book: -104,
+      amount: '1200,950,250',
+      odds: 290,
+      payout: 0
+    }
+  ])
 
   const getBets = async () => {
     setIsLoading(true)
@@ -27,6 +40,7 @@ const BetView = () => {
       //   sortFields: sortFields
       // })
       setAvailableBets(betDetailData)
+      setAcceptedBet(betDetailData)
     } catch (err) {
       console.log(err)
       Swal.fire({
@@ -41,6 +55,32 @@ const BetView = () => {
   useEffect(() => {
     getBets()
   }, [])
+
+  useEffect(() => {
+    console.log(availableBets)
+  }, [JSON.stringify(availableBets)])
+
+  const stakeHandle = (value, id) => {
+    let arr = betDetailData
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].id === id) {
+        arr[i].stake = parseFloat(value)
+        let payout = 0
+        const odds = arr[i].odds
+        if (value !== '') {
+          if (odds > 0) {
+            payout = value * (1 + Math.abs(odds) / 100)
+          } else {
+            payout = value * (1 + 100 / Math.abs(odds))
+          }
+        }
+        arr[i].payout = payout
+      }
+    }
+
+    setAvailableBets(arr)
+    setAcceptedBet(arr)
+  }
 
   return (
     <div className="manage-accounts-container">
@@ -69,7 +109,11 @@ const BetView = () => {
           </div>
         </div>
         <div>
-          <TableWrapper data={availableBets} />
+          <TableWrapper
+            data={availableBets}
+            acceptedBet={acceptedBet}
+            stakeHandle={stakeHandle}
+          />
         </div>
       </div>
     </div>

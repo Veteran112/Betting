@@ -1,7 +1,7 @@
 import React from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
-import { Button, Input, Box, Grid, Typography } from '@mui/material'
+import { Button, TextField, Box, Grid, Typography } from '@mui/material'
 import SquareIcon from '@mui/icons-material/Square'
 
 const TableWrapper = (props) => {
@@ -16,22 +16,24 @@ const TableWrapper = (props) => {
       },
       {
         Header: 'BOOKS',
-        accessor: 'books',
         disableSortBy: true,
         Cell: ({ row }) => {
+          const amount = row.original.amount.split(',')
+
           return (
             <>
-              {row.original.books.map((item, index) => (
-                <span key={index} className="ml-3">
-                  {item > 0 && <>+</>}
-                  {item}
-                  <SquareIcon className="ml-1" color="primary" />
+              {amount.map((item, index) => (
+                <span className="mr-2" key={index}>
+                  {row.original.book > 0 && <>+</>}
+                  {row.original.book}
+                  <SquareIcon color="primary" />
                 </span>
               ))}
               <br />
-              {row.original.books.map((item, index) => (
-                <span key={index} className="ml-3">
-                  $1200
+              {amount.map((item, index) => (
+                <span className="mr-3" key={index}>
+                  <span key={index}>$</span>
+                  {item}
                 </span>
               ))}
             </>
@@ -41,17 +43,35 @@ const TableWrapper = (props) => {
       {
         Header: 'ODDS',
         disableSortBy: true,
-        Cell: () => {
-          return <>-250</>
+        Cell: ({ row }) => {
+          return (
+            <span>
+              {row.original.odds > 0 && <>+</>} {row.original.odds}
+            </span>
+          )
         }
       },
       {
         Header: 'STAKE',
         disableSortBy: true,
-        Cell: () => {
+        Cell: ({ row }) => {
+          const amount = row.original.amount.split(',')
+          let totalAmount = 0
+          for (let i = 0; i < amount.length; i++) {
+            totalAmount += parseFloat(amount[i])
+          }
           return (
             <>
-              <Input placeholder="MAX $2500" />
+              <TextField
+                placeholder={'MAX $' + totalAmount}
+                label={'MAX $' + totalAmount}
+                variant="outlined"
+                onChange={(e) =>
+                  props.stakeHandle(e.target.value, row.original.id)
+                }
+                value={row.original.stake}
+                type="number"
+              />
             </>
           )
         }
@@ -59,61 +79,7 @@ const TableWrapper = (props) => {
       {
         Header: 'PAYOUT',
         disableSortBy: true,
-        Cell: () => {
-          return <>$1260</>
-        }
-      }
-    ],
-    []
-  )
-
-  const columns1 = React.useMemo(
-    () => [
-      {
-        Header: 'DATE',
-        disableSortBy: true,
-        Cell: () => {
-          return <span>09-02-22 08:45AM</span>
-        }
-      },
-      {
-        Header: 'EVENT',
-        disableSortBy: true,
-        Cell: () => {
-          return <span>BASEBALL xxx vs. xxx</span>
-        }
-      },
-      {
-        Header: 'ODDS',
-        disableSortBy: true,
-        Cell: () => {
-          return <>-250</>
-        }
-      },
-      {
-        Header: 'STAKE',
-        disableSortBy: true,
-        Cell: () => {
-          return <span>$900</span>
-        }
-      },
-      {
-        Header: 'PAYOUT',
-        disableSortBy: true,
-        Cell: () => {
-          return <>$1260</>
-        }
-      },
-      {
-        Header: 'PROFIT',
-        disableSortBy: true,
-        Cell: () => {
-          return (
-            <>
-              $36.92(2.93%)<Button className="_btn ml-2">SCREEN</Button>
-            </>
-          )
-        }
+        accessor: 'payout'
       }
     ],
     []
@@ -122,7 +88,7 @@ const TableWrapper = (props) => {
   return (
     <>
       <RTable
-        data={props.data.data}
+        data={props.data}
         columns={columns}
         style={{ height: 'auto' }}
         paginationBool={false}
@@ -158,18 +124,42 @@ const TableWrapper = (props) => {
       <Box className="w-100 overflow-auto mb-4">
         <Button className="_btn float-right mt-3">CONTINUE {'>'}</Button>
       </Box>
-      <RTable
-        data={props.data.data}
-        columns={columns1}
-        style={{ height: 'auto' }}
-        paginationBool={false}
-      />
+      <table className="r-table r-table-full table-hover">
+        <thead className="bg-light font-weight-500 font-size-15">
+          <tr>
+            <th>DATE</th>
+            <th>EVENT</th>
+            <th>ODDS</th>
+            <th>STAKE</th>
+            <th>PAYOUT</th>
+            <th>PROFIT</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.acceptedBet.map((item, index) => (
+            <tr key={index}>
+              <td>09-02-22 08:45AM</td>
+              <td>BASEBALL xxx vs. xxx</td>
+              <td>
+                {item.odds > 0 && <>+</>} {item.odds}
+              </td>
+              <td>
+                {item.stake && <>$</>} {item.stake}
+              </td>
+              <td>$ {item.payout}</td>
+              <td>$36.92 (2.93%)</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 }
 
 TableWrapper.propTypes = {
   data: PropTypes.any,
-  row: PropTypes.array
+  row: PropTypes.array,
+  acceptedBet: PropTypes.any,
+  stakeHandle: PropTypes.func
 }
 export default TableWrapper
