@@ -199,8 +199,8 @@ const BettingProviderView = () => {
                         deleteUser: false
                       })
                       Swal.fire(
-                        'User Deleted!',
-                        'User has been deleted.',
+                        'Provider Deleted!',
+                        'Provider has been deleted.',
                         'success'
                       )
                     })
@@ -261,7 +261,7 @@ const BettingProviderView = () => {
                   })
                   Swal.fire({
                     icon: 'success',
-                    text: 'User Updated',
+                    text: 'Provider Updated',
                     showConfirmButton: false,
                     timer: 1500
                   })
@@ -308,7 +308,7 @@ const BettingProviderView = () => {
               setUserData(initialUserState)
               Swal.fire({
                 icon: 'success',
-                text: 'User Created',
+                text: 'Provider Created',
                 showConfirmButton: false,
                 timer: 1500
               })

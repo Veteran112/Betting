@@ -174,8 +174,8 @@ const ProviderView = () => {
                         deleteUser: false
                       })
                       Swal.fire(
-                        'User Deleted!',
-                        'User has been deleted.',
+                        'Command Deleted!',
+                        'Command has been deleted.',
                         'success'
                       )
                     })
@@ -238,7 +238,7 @@ const ProviderView = () => {
                   })
                   Swal.fire({
                     icon: 'success',
-                    text: 'User Updated',
+                    text: 'Command Updated',
                     showConfirmButton: false,
                     timer: 1500
                   })
@@ -286,7 +286,7 @@ const ProviderView = () => {
               setUserData(initialUserState)
               Swal.fire({
                 icon: 'success',
-                text: 'User Created',
+                text: 'Command Created',
                 showConfirmButton: false,
                 timer: 1500
               })
