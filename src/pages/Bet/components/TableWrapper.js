@@ -206,8 +206,8 @@ const TableWrapper = (props) => {
         <tbody>
           {props.acceptedBet.map((item, index) => (
             <tr key={index}>
-              <td>09-02-22 08:45AM</td>
-              <td>BASEBALL xxx vs. xxx</td>
+              <td>{item.date}</td>
+              <td>{item.event}</td>
               <td>
                 {item.odds > 0 && <>+</>} {item.odds}
               </td>
