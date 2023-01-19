@@ -4,24 +4,40 @@ import { Link } from 'react-router-dom'
 import { PrimaryLoadingButton } from 'components/StyledButton'
 import { useAuth } from 'contexts'
 import { useNavigate } from 'react-router'
+import { validateEmail } from 'services/validators'
+import { INVALID_EMAIL } from 'config/CONSTANTS'
+import alert from 'utils/alert'
 
 const LoginView = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const [error, setError] = useState(false)
   const auth = useAuth()
   const history = useNavigate()
 
   const login = async () => {
-    const res = await auth.login(email, password)
-    if (res) {
-      history('/betting_provider')
+    if (!validateEmail(email)) {
+      alert(false, INVALID_EMAIL)
+      return
+    }
+    try {
+      const res = await auth.login(email, password)
+      if (res) {
+        history('/bet')
+      }
+      console.log(auth.error)
+    } catch (error) {
+      alert(false, error)
     }
   }
-
+  useEffect(() => {
+    if (email && email.length > 2) {
+      setError(!validateEmail(email))
+    }
+  }, [email])
   useEffect(() => {
     if (auth.isAuthenticated) {
-      history('/betting_provider')
+      history('/bet')
     }
   }, [])
   return (
@@ -43,14 +59,8 @@ const LoginView = () => {
                   variant="standard"
                   className="w-100 mb-4"
                   value={email}
-                  error={
-                    auth.error && auth.error.errorType === 1 ? true : false
-                  }
-                  helperText={
-                    auth.error && auth.error.errorType === 1
-                      ? auth.error.message
-                      : ''
-                  }
+                  error={error}
+                  helperText={error ? INVALID_EMAIL : ''}
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
