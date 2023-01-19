@@ -230,6 +230,7 @@ const TableWrapper = (props) => {
                   </>
                 )}{' '}
                 (2.93%)
+                <Button className="_btn ml-2">SCREEN</Button>
               </td>
             </tr>
           ))}
