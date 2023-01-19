@@ -2,6 +2,7 @@ import { RES_ERROR } from 'config/CONSTANTS'
 import APIConstants from './CONSTANTS'
 import jwt from 'jwt-decode'
 import axiosInstance from 'utils/axios'
+import alert from 'utils/alert'
 
 class AuthService {
   constructor() {}
@@ -45,6 +46,7 @@ class AuthService {
           }
         })
         .catch((error) => {
+          if (error && error.response) alert(false, error.response.data.error)
           console.log(error.response)
           reject({
             errorType: 3,
