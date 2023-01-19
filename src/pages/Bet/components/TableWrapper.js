@@ -92,6 +92,7 @@ const TableWrapper = (props) => {
           paginationBool={false}
         />
       </div>
+      <Typography>BOOKS</Typography>
       <table className="r-table r-table-full table-hover">
         <thead className="bg-light font-weight-500 font-size-15">
           <tr>
@@ -190,6 +191,7 @@ const TableWrapper = (props) => {
       <Box className="w-100 overflow-auto mb-4">
         <Button className="_btn float-right mt-3">CONTINUE {'>'}</Button>
       </Box>
+      <Typography className="text-center m-2">ACCEPTED BETS</Typography>
       <table className="r-table r-table-full table-hover">
         <thead className="bg-light font-weight-500 font-size-15">
           <tr>
