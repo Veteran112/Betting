@@ -78,7 +78,7 @@ class AuthService {
           }
         })
         .catch((error) => {
-          console.log(error.response)
+          if (error && error.response) alert(false, error.response.data.error)
           reject({
             errorType: 3,
             errorMsg: RES_ERROR

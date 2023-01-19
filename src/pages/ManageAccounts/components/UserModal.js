@@ -41,10 +41,6 @@ const UserModal = (props) => {
     setUserData(data)
   }, [data])
 
-  useEffect(() => {
-    console.log(Object.keys(sourceFields), '---')
-  }, [])
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>

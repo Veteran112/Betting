@@ -55,6 +55,26 @@ const newUserFields = {
     }
   }
 }
+const updateUserFields = {
+  fname: {
+    kind: 'TextField',
+    id: 'userfname',
+    label: 'First Name',
+    data: '',
+    helperTexts: {
+      required: 'is Required'
+    }
+  },
+  lname: {
+    kind: 'TextField',
+    id: 'userlname',
+    label: 'Last Name',
+    data: '',
+    helperTexts: {
+      required: 'is Required'
+    }
+  }
+}
 const filterFields = {
   userType: {
     kind: 'Select',
@@ -119,4 +139,4 @@ const changePasswordFields = {
     }
   }
 }
-export { newUserFields, changePasswordFields, filterFields }
+export { newUserFields, updateUserFields, changePasswordFields, filterFields }

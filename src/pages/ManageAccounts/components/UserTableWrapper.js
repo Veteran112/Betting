@@ -2,8 +2,10 @@ import React from 'react'
 import RTable from 'components/RTable'
 import PropTypes from 'prop-types'
 import { Button } from '@mui/material'
+import { useAuth } from 'contexts'
 
 const UserTableWrapper = (props) => {
+  const auth = useAuth()
   const columns = React.useMemo(
     () => [
       {
@@ -25,12 +27,14 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              <Button
-                className="_btn w-100"
-                onClick={() => props.onPasswordUpdate(row)}
-              >
-                CHANGE PASSWORD
-              </Button>
+              {auth.profile._id === row.original._id && (
+                <Button
+                  className="_btn w-100"
+                  onClick={() => props.onPasswordUpdate(row)}
+                >
+                  CHANGE PASSWORD
+                </Button>
+              )}
             </>
           )
         }
@@ -42,12 +46,14 @@ const UserTableWrapper = (props) => {
           return (
             <>
               {!row.original.block ? 'Active' : 'Inactive'}
-              <Button
-                className="_btn ml-2"
-                onClick={() => props.onBlock(row, !row.original.block)}
-              >
-                {!row.original.block ? 'Block' : 'Unblock'}
-              </Button>
+              {auth.profile._id !== row.original._id && (
+                <Button
+                  className="_btn ml-2"
+                  onClick={() => props.onBlock(row, !row.original.block)}
+                >
+                  {!row.original.block ? 'Block' : 'Unblock'}
+                </Button>
+              )}
             </>
           )
         }
@@ -58,12 +64,17 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              {/* <Button className="_btn" onClick={() => props.onEdit(row)}>
-                EDIT USER
-              </Button> */}
-              <Button className="_btn ml-2" onClick={() => props.onDelete(row)}>
-                DELETE USER
-              </Button>
+              {auth.profile._id === row.original._id && (
+                <Button className="_btn" onClick={() => props.onEdit(row)}>
+                  EDIT USER
+                </Button>
+              )}
+
+              {auth.profile._id !== row.original._id && (
+                <Button className="_btn" onClick={() => props.onDelete(row)}>
+                  DELETE USER
+                </Button>
+              )}
             </>
           )
         }

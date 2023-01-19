@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Chip, CircularProgress, Typography } from '@mui/material'
 import { PrimaryButton } from 'components/StyledButton'
-import { newUserFields, changePasswordFields, filterFields } from './constants'
+import {
+  newUserFields,
+  changePasswordFields,
+  filterFields,
+  updateUserFields
+} from './constants'
 import { getAPIService } from 'services/apiServices'
 import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import UserModal from './components/UserModal'
 import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
-import { removeKeysFromObject } from 'utils/convertors'
 
 const ManageAccountsView = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -294,7 +298,7 @@ const ManageAccountsView = () => {
           <UserModal
             open={modalsState.editUser}
             title={'Update User'}
-            sourceFields={removeKeysFromObject(newUserFields, ['password'])}
+            sourceFields={updateUserFields}
             data={currentlyEditingUser}
             onSecondaryClick={() => {
               setModalsState({

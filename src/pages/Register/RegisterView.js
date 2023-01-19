@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
 import { Link } from 'react-router-dom'
 import { PrimaryLoadingButton } from 'components/StyledButton'
 import { useAuth } from 'contexts'
 import { useNavigate } from 'react-router'
+import { validateEmail } from 'services/validators'
+import {
+  INVALID_EMAIL,
+  INVALID_MATCH,
+  INVALID_LENGTH,
+  NOT_FILL
+} from 'config/CONSTANTS'
+import alert from 'utils/alert'
 
 const RegisterView = () => {
   const [data, setData] = useState({
@@ -14,22 +21,52 @@ const RegisterView = () => {
     password: '',
     confirmPassword: ''
   })
-
+  const [error, setError] = useState(false)
   const auth = useAuth()
   const history = useNavigate()
 
   const register = async () => {
-    console.log('registering')
-    const res = await auth.register(data)
-    if (res) {
-      history('/betting_provider')
+    if (
+      data.email === '' ||
+      data.fname === '' ||
+      data.lname === '' ||
+      data.password === ''
+    ) {
+      alert(false, NOT_FILL)
+      return
+    }
+    if (!validateEmail(data.email)) {
+      alert(false, INVALID_EMAIL)
+      return
+    }
+    if (String(data.password.length) < 8) {
+      alert(false, INVALID_LENGTH)
+      return
+    }
+    if (data.password !== data.confirmPassword) {
+      alert(false, INVALID_MATCH)
+      return
+    }
+    try {
+      const res = await auth.register(data)
+      if (res) {
+        history('/bet')
+      }
+    } catch (error) {
+      alert(false, error)
     }
   }
   useEffect(() => {
     if (auth.isAuthenticated) {
-      history('/betting_provider')
+      history('/bet')
     }
   }, [])
+
+  useEffect(() => {
+    if (data.email && data.email.length > 2) {
+      setError(!validateEmail(data.email))
+    }
+  }, [data.email])
 
   return (
     <div className="register-container row pt-4 pb-4 m-0">
@@ -64,99 +101,9 @@ const RegisterView = () => {
                   className="w-100 mb-4"
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
+                  error={error}
+                  helperText={error ? INVALID_EMAIL : ''}
                 />
-                {/* <FormControl variant="standard" className="w-100 mb-4">
-                  <InputLabel>Location</InputLabel>
-                  <Select
-                    value={data.location}
-                    onChange={(e) =>
-                      setData({ ...data, location: e.target.value })
-                    }
-                    label="Location"
-                    sx={{ textAlign: 'left' }}
-                  >
-                    {countrys.map((item) => (
-                      <MenuItem value={item.value} key={item.value}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl> */}
-                {/* <ReactPhoneInput
-                  inputClass="border-none p-0"
-                  placeholder="Phone Number"
-                  value={data.phone}
-                  onChange={(e) => {
-                    setData({ ...data, phone: e })
-                  }}
-                  component={Input}
-                /> */}
-                {/* <FormControl variant="standard">
-                  <RadioGroup
-                    row
-                    aria-labelledby="row-controlled-radio-buttons-group"
-                    variant="standard"
-                    value={data.userType}
-                    onChange={(e) =>
-                      setData({ ...data, userType: e.target.value })
-                    }
-                  >
-                    <FormControlLabel
-                      value="interpreter"
-                      control={<Radio />}
-                      label="interpreter"
-                    />
-                    <FormControlLabel
-                      value="client"
-                      control={<Radio />}
-                      label="client"
-                    />
-                  </RadioGroup>
-                </FormControl> */}
-                {/* {data.userType === 'client' && (
-                  <TextField
-                    label="Company"
-                    type="text"
-                    variant="standard"
-                    className="w-100 mb-4"
-                    value={data.company}
-                    onChange={(e) =>
-                      setData({ ...data, company: e.target.value })
-                    }
-                  />
-                )} */}
-                {/* {data.userType === 'interpreter' && (
-                  <>
-                    <TextField
-                      label="Language"
-                      type="text"
-                      variant="standard"
-                      className="w-100 mb-4"
-                      value={data.language}
-                      onChange={(e) =>
-                        setData({ ...data, language: e.target.value })
-                      }
-                    />
-                    <FormControl variant="standard" className="w-100 mb-4">
-                      <InputLabel>Experience</InputLabel>
-                      <Select
-                        value={data.experience}
-                        onChange={(e) =>
-                          setData({ ...data, experience: e.target.value })
-                        }
-                        label="Experience"
-                        sx={{ textAlign: 'left' }}
-                      >
-                        <MenuItem value={1}>1 year</MenuItem>
-                        <MenuItem value={2}>2 years</MenuItem>
-                        <MenuItem value={3}>3 years</MenuItem>
-                        <MenuItem value={4}>4 years</MenuItem>
-                        <MenuItem value={5}>5 years</MenuItem>
-                        <MenuItem value={6}>Over 5 years</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </>
-                )} */}
                 <TextField
                   label="Password"
                   type="password"
@@ -177,11 +124,6 @@ const RegisterView = () => {
                     setData({ ...data, confirmPassword: e.target.value })
                   }
                 />
-                {auth.error && (
-                  <InputLabel sx={{ color: 'red' }}>
-                    {auth.error.message}
-                  </InputLabel>
-                )}
                 <PrimaryLoadingButton
                   label="Sign Up"
                   className="w-100"

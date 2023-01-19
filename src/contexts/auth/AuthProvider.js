@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { AuthContext } from './AuthContext'
 import authServices from 'services/authServices'
-import { validateEmail } from 'services/validators'
 import axiosInstance from 'utils/axios'
 
 const AuthProvider = ({ children }) => {
@@ -36,60 +35,15 @@ const AuthProvider = ({ children }) => {
   }
 
   const register = async (data) => {
-    if (
-      data.email === '' ||
-      data.fname === '' ||
-      data.lname === '' ||
-      data.password === '' ||
-      data.confirmPassword === ''
-    ) {
-      setError({
-        message: 'Fill all the gaps'
-      })
-      return false
-    }
-
-    if (!validateEmail(data.email)) {
-      setError({
-        message: 'Input correct email!'
-      })
-      return false
-    }
-
-    if (data.password !== data.confirmPassword) {
-      setError({
-        message: 'Password does not match!'
-      })
-      return false
-    }
-    if (String(data.password.length) < 8) {
-      setError({
-        message: 'Password should be longer than 8 characters'
-      })
-      return false
-    }
-    if (data.userType === 'interpreter') {
-      if (data.language === '' || data.experience === '') {
-        setError({
-          message: 'Fill all the gaps'
-        })
-        return false
-      }
-    } else {
-      if (data.company === '') {
-        setError({
-          message: 'Fill all the gaps'
-        })
-        return false
-      }
-    }
-    console.log('validation susccess')
     try {
       setIsAuthenticating(true)
       const res = await authServices.register(data)
-      localStorage.setItem('token', res.token)
-      localStorage.setItem('neon-user', JSON.stringify(res.user))
-      axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
+      if (res.user && res.token) {
+        localStorage.setItem('token', res.token)
+        localStorage.setItem('neon-user', JSON.stringify(res.user))
+        axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + data.token
+      }
+
       setProfile(res.user)
       userHasAuthenticated(true)
       setIsAuthenticating(false)

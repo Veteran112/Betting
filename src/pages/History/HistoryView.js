@@ -5,8 +5,10 @@ import { getAPIService } from 'services/apiServices'
 import APIConstants from 'services/CONSTANTS'
 import Swal from 'sweetalert2'
 import TableWrapper from './components/TableWrapper'
+import { useAuth } from 'contexts'
 
 const HistoryView = () => {
+  const auth = useAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const [availableBets, setAvailableBets] = useState({
@@ -18,7 +20,11 @@ const HistoryView = () => {
   const getBets = async () => {
     setIsLoading(true)
     try {
-      const data = await getAPIService(APIConstants.HISTORY, {}, 'GET')
+      const data = await getAPIService(
+        APIConstants.HISTORY + '/' + auth.profile._id,
+        {},
+        'GET'
+      )
       if (data.error) {
         Swal.fire({
           icon: 'error',
