@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import BetView from './BetView'
 import './styles.scss'
 import Sidebar from '../../components/Sidebar'
@@ -8,10 +8,26 @@ export const BetContainer = () => {
     document.title = ''
   }, [])
 
+  const [open, setOpen] = useState(false)
+
+  const handleDrawerOpen = () => {
+    setOpen(true)
+  }
+
+  const handleDrawerClose = () => {
+    setOpen(false)
+  }
+
   return (
     <div>
-      <BetView />
-      <Sidebar />
+      <div onClick={handleDrawerClose}>
+        <BetView />
+      </div>
+      <Sidebar
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+        handleDrawerClose={handleDrawerClose}
+      />
     </div>
   )
 }

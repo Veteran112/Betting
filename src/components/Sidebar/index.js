@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Typography, Grid } from '@mui/material'
+import PropTypes from 'prop-types'
 
 const drawerWidth = 240
 
@@ -43,28 +44,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end'
 }))
 
-export default function Sidebar() {
+const Sidebar = (props) => {
   const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={props.open}>
         <Toolbar>
           <IconButton
             color="black"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={props.handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, mt: 3, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2, mt: 3, ...(props.open && { display: 'none' }) }}
           >
             <ChevronRightIcon />
           </IconButton>
@@ -84,10 +76,10 @@ export default function Sidebar() {
         }}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={props.open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={props.handleDrawerClose}>
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
@@ -127,3 +119,11 @@ export default function Sidebar() {
     </Box>
   )
 }
+
+Sidebar.propTypes = {
+  open: PropTypes.bool,
+  handleDrawerOpen: PropTypes.func,
+  handleDrawerClose: PropTypes.func
+}
+
+export default Sidebar
