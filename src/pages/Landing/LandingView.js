@@ -109,7 +109,7 @@ const LandingView = () => {
                     {' '}
                     History{' '}
                   </Link>
-                  {auth.profile && auth.profile.userType === 'admin' && (
+                  {auth.profile && auth.profile.user_type === 'admin' && (
                     <Link
                       sx={{
                         color: '#ccc !important',
@@ -196,6 +196,7 @@ const LandingView = () => {
                       </MenuItem>
                     </div>
                   )}
+
                   {auth.isAuthenticated && (
                     <>
                       <MenuItem
@@ -212,28 +213,23 @@ const LandingView = () => {
                       >
                         <Typography>History</Typography>
                       </MenuItem>
-                    </>
-                  )}
-                  {auth.isAuthenticated &&
-                    auth.profile &&
-                    auth.profile.userType === 'admin' && (
+
                       <MenuItem
                         onClick={() => {
-                          navigate('/manage_users')
+                          navigate('/manage_users/' + auth.profile._id)
                         }}
                       >
                         <Typography>Manage accounts</Typography>
                       </MenuItem>
-                    )}
-                  {auth.isAuthenticated && (
-                    <MenuItem
-                      onClick={() => {
-                        auth.logout()
-                        handleCloseNavMenu()
-                      }}
-                    >
-                      <Typography>Logout</Typography>
-                    </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          auth.logout()
+                          handleCloseNavMenu()
+                        }}
+                      >
+                        <Typography>Logout</Typography>
+                      </MenuItem>
+                    </>
                   )}
                 </div>
               </Menu>

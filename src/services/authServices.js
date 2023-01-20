@@ -34,8 +34,7 @@ class AuthService {
             resolve({
               token: resData.token,
               user: {
-                ...resData.user,
-                userType: 'admin'
+                ...resData.user
               }
             })
           } else {
@@ -66,8 +65,7 @@ class AuthService {
             resolve({
               token: resData.token,
               user: {
-                ...resData.user,
-                userType: 'admin'
+                ...resData.user
               }
             })
           } else {

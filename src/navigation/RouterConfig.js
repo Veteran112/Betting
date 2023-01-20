@@ -12,7 +12,6 @@ const Login = React.lazy(() => import('pages/Login'))
 const Register = React.lazy(() => import('pages/Register'))
 const BettingProvider = React.lazy(() => import('pages/BettingProvider'))
 const Provider = React.lazy(() => import('pages/Provider'))
-const Interpreters = React.lazy(() => import('pages/WorkTime'))
 const ManageAccounts = React.lazy(() => import('pages/ManageAccounts'))
 const ForgotPasswordContainer = React.lazy(() => import('pages/ForgotPassword'))
 const ResetPasswordContainer = React.lazy(() => import('pages/ResetPassword'))
@@ -61,7 +60,7 @@ export const RouterConfig = () => {
           />
           <Route
             exact
-            path="/manage_users"
+            path="/manage_users/:id"
             element={
               <PrivateRoute>
                 <>
@@ -71,7 +70,7 @@ export const RouterConfig = () => {
               </PrivateRoute>
             }
           />
-          <Route
+          {/* <Route
             exact
             path="/manage_users/:id"
             element={
@@ -82,7 +81,7 @@ export const RouterConfig = () => {
                 </>
               </PrivateRoute>
             }
-          />
+          /> */}
           <Route
             exact
             path="/forgot_password"

@@ -47,17 +47,15 @@ const ExtendedMenu = () => {
             </li>
           </ul>
 
-          {auth.profile.userType === 'admin' && (
-            <ul className="mt-2">
-              <li
-                onClick={() => {
-                  navigate('/manage_users')
-                }}
-              >
-                Manage Accounts
-              </li>
-            </ul>
-          )}
+          <ul className="mt-2">
+            <li
+              onClick={() => {
+                navigate('/manage_users/' + auth.profile._id)
+              }}
+            >
+              Manage Accounts
+            </li>
+          </ul>
           <div className="menu-divider" />
           <ul>
             <li

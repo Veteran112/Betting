@@ -27,14 +27,12 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              {auth.profile._id === row.original._id && (
-                <Button
-                  className="_btn w-100"
-                  onClick={() => props.onPasswordUpdate(row)}
-                >
-                  CHANGE PASSWORD
-                </Button>
-              )}
+              <Button
+                className="_btn w-100"
+                onClick={() => props.onPasswordUpdate(row)}
+              >
+                CHANGE PASSWORD
+              </Button>
             </>
           )
         }
@@ -45,15 +43,19 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              {!row.original.block ? 'Active' : 'Inactive'}
-              {auth.profile._id !== row.original._id && (
-                <Button
-                  className="_btn ml-2"
-                  onClick={() => props.onBlock(row, !row.original.block)}
-                >
-                  {!row.original.block ? 'Block' : 'Unblock'}
-                </Button>
-              )}
+              {auth.profile.user_type === 'admin' &&
+                row.original.user_type !== 'admin' &&
+                row.original.admin_id && (
+                  <>
+                    <span>{!row.original.block ? 'Active' : 'Inactive'}</span>
+                    <Button
+                      className="_btn ml-2"
+                      onClick={() => props.onBlock(row, !row.original.block)}
+                    >
+                      {!row.original.block ? 'Block' : 'Unblock'}
+                    </Button>
+                  </>
+                )}
             </>
           )
         }
@@ -64,17 +66,20 @@ const UserTableWrapper = (props) => {
         Cell: ({ row }) => {
           return (
             <>
-              {auth.profile._id === row.original._id && (
-                <Button className="_btn" onClick={() => props.onEdit(row)}>
-                  EDIT USER
-                </Button>
-              )}
+              <Button className="_btn" onClick={() => props.onEdit(row)}>
+                EDIT USER
+              </Button>
 
-              {auth.profile._id !== row.original._id && (
-                <Button className="_btn" onClick={() => props.onDelete(row)}>
-                  DELETE USER
-                </Button>
-              )}
+              {auth.profile.user_type === 'admin' &&
+                row.original.user_type !== 'admin' &&
+                row.original.admin_id && (
+                  <Button
+                    className="_btn ml-2"
+                    onClick={() => props.onDelete(row)}
+                  >
+                    DELETE USER
+                  </Button>
+                )}
             </>
           )
         }

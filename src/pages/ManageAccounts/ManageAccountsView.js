@@ -13,10 +13,12 @@ import Swal from 'sweetalert2'
 import UserModal from './components/UserModal'
 import FilterModal from './components/FilterModal'
 import UserTableWrapper from './components/UserTableWrapper'
+import { useAuth } from 'contexts'
 
 const ManageAccountsView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentlyEditingUser, setCurrentlyEditingUser] = useState({})
+  const auth = useAuth()
 
   const initialUserState = () => {
     return Object.keys(newUserFields).reduce((allFields, field) => {
@@ -85,7 +87,11 @@ const ManageAccountsView = () => {
   const getUsers = async () => {
     setIsLoading(true)
     try {
-      const data = await getAPIService(APIConstants.GET_ALL_USERS, {}, 'get')
+      const data = await getAPIService(
+        APIConstants.GET_ALL_USERS + '/' + auth.profile._id,
+        {},
+        'get'
+      )
       if (data.error) {
         Swal.fire({
           icon: 'error',
@@ -172,18 +178,20 @@ const ManageAccountsView = () => {
               />
             )}
           </div>
-          <div>
-            <PrimaryButton
-              onClick={() =>
-                setModalsState({
-                  ...modalsState,
-                  createUser: true
-                })
-              }
-            >
-              Create User
-            </PrimaryButton>
-          </div>
+          {auth.profile.user_type == 'admin' && (
+            <div>
+              <PrimaryButton
+                onClick={() =>
+                  setModalsState({
+                    ...modalsState,
+                    createUser: true
+                  })
+                }
+              >
+                Create User
+              </PrimaryButton>
+            </div>
+          )}
         </div>
         <div>
           <UserTableWrapper
@@ -465,7 +473,10 @@ const ManageAccountsView = () => {
         onPrimaryClick={(newUserData) => {
           setLoading('CreatingUser')
 
-          getAPIService(APIConstants.CREATE_USER, newUserData)
+          getAPIService(APIConstants.CREATE_USER, {
+            ...newUserData,
+            admin_id: auth.profile._id
+          })
             .then(() => {
               setUserData(initialUserState)
               Swal.fire({

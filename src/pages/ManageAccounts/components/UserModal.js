@@ -48,47 +48,31 @@ const UserModal = (props) => {
           {title}
         </Typography>
         <Grid container spacing={{ xs: 2, md: 2 }} className="mt-1">
-          {Object.keys(sourceFields).map((key) => {
-            if (
-              (key === 'company' && userData['userType'] === 'client') ||
-              ((key === 'language' ||
-                key === 'availability' ||
-                key === 'experience') &&
-                userData['userType'] === 'interpreter') ||
-              (key !== 'company' &&
-                key !== 'language' &&
-                key !== 'availability' &&
-                key !== 'experience')
-            ) {
-              return (
-                <Grid item xs={12} sm={6} md={6} key={key}>
-                  <TextField1
-                    id={key}
-                    kind={sourceFields[key].kind}
-                    label={sourceFields[key].label}
-                    data={
-                      key === 'location' ? countrys : sourceFields[key].data
-                    }
-                    type={sourceFields[key].kind}
-                    value={userData[key]}
-                    onChange={(e) => {
-                      setUserData({
-                        ...userData,
-                        [key]: e.target.value
-                      })
-                      onFieldInteract({
-                        fieldName: key,
-                        value: e.target.value
-                      })
-                    }}
-                    error={errors[key]}
-                    helperText={helperTexts[key]}
-                    startAdornment={<></>}
-                  />
-                </Grid>
-              )
-            }
-          })}
+          {Object.keys(sourceFields).map((key) => (
+            <Grid item xs={12} sm={6} md={6} key={key}>
+              <TextField1
+                id={key}
+                kind={sourceFields[key].kind}
+                label={sourceFields[key].label}
+                data={key === 'location' ? countrys : sourceFields[key].data}
+                type={sourceFields[key].kind}
+                value={userData[key]}
+                onChange={(e) => {
+                  setUserData({
+                    ...userData,
+                    [key]: e.target.value
+                  })
+                  onFieldInteract({
+                    fieldName: key,
+                    value: e.target.value
+                  })
+                }}
+                error={errors[key]}
+                helperText={helperTexts[key]}
+                startAdornment={<></>}
+              />
+            </Grid>
+          ))}
         </Grid>
         <div className="d-flex justify-content-end mt-3 gap-1">
           <PrimaryLoadingButton
