@@ -38,7 +38,13 @@ const Navbar = () => {
     <AppBar position="static" color="inherit">
       <Container maxWidth="xl">
         <Toolbar disableGutters className={styles.toolbar}>
-          <Box sx={{ ml: 'auto', display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{
+              ml: 'auto',
+              display: { xs: 'none', md: 'flex' },
+              zIndex: 999
+            }}
+          >
             <MenuButton
               onClick={() => {
                 navigate('/')
