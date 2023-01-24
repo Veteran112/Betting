@@ -62,7 +62,7 @@ const RTable = (props) => {
     setGlobalFilter(props.setGlobalFilterValue)
   }, [props.setGlobalFilterValue])
 
-  useEffect(() => {}, [globalFilter])
+  useEffect(() => { }, [globalFilter])
 
   return (
     <div style={style} className="d-flex flex-column gap-1">
@@ -141,19 +141,6 @@ const RTable = (props) => {
           })}
         </tbody>
       </table>
-      {/* <div className="d-flex justify-content-between">
-        <Typography className="mt-4">Command: </Typography>
-        <TextField
-          style={{ marginTop: '20px' }}
-          defaultValue=""
-          id="outlined-helperText"
-          label="Command"
-        ></TextField>
-        <Button className="_btn mt-4">+ADD COMMAND</Button>
-        <Button className="_btn mt-4" onClick={() => setTest(true)}>
-          RUN TEST
-        </Button>
-      </div> */}
 
       {paginationBool && (
         <div className="pagination-container mt-4">
