@@ -61,8 +61,8 @@ const RTable = (props) => {
   useEffect(() => {
     setGlobalFilter(props.setGlobalFilterValue)
   }, [props.setGlobalFilterValue])
-
-  useEffect(() => { }, [globalFilter])
+  //
+  useEffect(() => {}, [globalFilter])
 
   return (
     <div style={style} className="d-flex flex-column gap-1">
